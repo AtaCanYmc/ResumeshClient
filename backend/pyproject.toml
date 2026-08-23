@@ -48,6 +48,7 @@ profile = "black"
 line_length = 88
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.ruff]
