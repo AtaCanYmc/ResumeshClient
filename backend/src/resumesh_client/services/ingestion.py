@@ -6,10 +6,10 @@ Orchestrates platform scrapers and persists data to database/storage repositorie
 import logging
 from typing import Any, Dict, List, Optional
 
-from resumesh_core.interfaces import IScraperService
-from resumesh_core.schemas.article import ArticleCreate
-from resumesh_core.schemas.package import PackageCreate
-from resumesh_core.schemas.project import ProjectCreate
+from resumesh_client.interfaces import IScraperService
+from resumesh_client.schemas.article import ArticleCreate
+from resumesh_client.schemas.package import PackageCreate
+from resumesh_client.schemas.project import ProjectCreate
 from resumesh_scrapers import (
     BehanceScraper,
     DevToScraper,
@@ -20,8 +20,8 @@ from resumesh_scrapers import (
     ScraperError,
     SubstackScraper,
 )
-from resumesh_storage.repositories.article import IArticleRepository
-from resumesh_storage.repositories.project import IProjectRepository
+from resumesh_client.repositories.article import IArticleRepository
+from resumesh_client.repositories.project import IProjectRepository
 
 logger = logging.getLogger(__name__)
 

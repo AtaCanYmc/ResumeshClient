@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Query
-from resumesh_core.schemas.video import VideoResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.video import Video
+from resumesh_client.schemas.video import VideoResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.video import Video
 
 router = APIRouter(prefix="/api/v1/videos", tags=["Videos"])
 

@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, Response
-from resumesh_storage.db import get_db
-from resumesh_storage.models.project import Project
+from resumesh_client.db import get_db
+from resumesh_client.models.project import Project
 
 router = APIRouter(tags=["seo"])
 

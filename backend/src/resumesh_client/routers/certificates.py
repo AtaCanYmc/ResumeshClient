@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from resumesh_core.schemas.certificate import CertificateResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.certificate import Certificate
+from resumesh_client.schemas.certificate import CertificateResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.certificate import Certificate
 
 router = APIRouter(prefix="/api/v1/certificates", tags=["Certificates"])
 

@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Query
-from resumesh_core.schemas.social_link import SocialLinkResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.social_link import SocialLink
+from resumesh_client.schemas.social_link import SocialLinkResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.social_link import SocialLink
 
 router = APIRouter(prefix="/api/v1/social-links", tags=["Social Links"])
 

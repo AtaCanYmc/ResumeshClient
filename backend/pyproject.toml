@@ -23,12 +23,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "resumesh-core>=0.1.0",
     "resumesh-scrapers>=0.8.0",
-    "resumesh-storage>=0.1.0",
     "fastapi>=0.110.0",
     "uvicorn>=0.30.0",
     "pydantic>=2.11.0",
+    "pydantic-settings>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "supabase>=2.30.0",
     "slowapi>=0.1.10",
     "python-multipart>=0.0.9",
     "pyjwt>=2.8.0",
@@ -47,7 +48,6 @@ profile = "black"
 line_length = 88
 
 [tool.pytest.ini_options]
-asyncio_mode = "auto"
 testpaths = ["tests"]
 
 [tool.ruff]

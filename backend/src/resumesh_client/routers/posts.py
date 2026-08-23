@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from resumesh_core.schemas.post import PostResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.post import Post
+from resumesh_client.schemas.post import PostResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.post import Post
 
 router = APIRouter(prefix="/api/v1/posts", tags=["Posts"])
 

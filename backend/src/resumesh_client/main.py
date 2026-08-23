@@ -2,7 +2,7 @@
 ResuMesh Client API Entrypoint - Read-Only Visitor REST Service
 """
 
-import resumesh_storage.models  # noqa: F401
+import resumesh_client.models  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from resumesh_client.routers import (
@@ -24,8 +24,8 @@ from resumesh_client.routers import (
     social_links,
     videos,
 )
-from resumesh_core.config import settings
-from resumesh_storage.db import Base, engine
+from resumesh_client.config import settings
+from resumesh_client.db import Base, engine
 
 Base.metadata.create_all(bind=engine)
 

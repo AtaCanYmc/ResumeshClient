@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Query
-from resumesh_core.schemas.section import SectionResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.section import Section
+from resumesh_client.schemas.section import SectionResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.section import Section
 
 router = APIRouter(prefix="/api/v1/sections", tags=["Sections"])
 

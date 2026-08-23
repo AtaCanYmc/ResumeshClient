@@ -1,12 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Query
-from resumesh_core.schemas.search import GlobalSearchResponse, SearchResultItem
-from resumesh_storage.db import get_db
-from resumesh_storage.models.article import Article
-from resumesh_storage.models.certificate import Certificate
-from resumesh_storage.models.experience import Experience
-from resumesh_storage.models.project import Project
+from resumesh_client.schemas.search import GlobalSearchResponse, SearchResultItem
+from resumesh_client.db import get_db
+from resumesh_client.models.article import Article
+from resumesh_client.models.certificate import Certificate
+from resumesh_client.models.experience import Experience
+from resumesh_client.models.project import Project
 
 router = APIRouter(prefix="/api/v1/search", tags=["Search"])
 

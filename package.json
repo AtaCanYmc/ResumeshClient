@@ -1,0 +1,14 @@
+{
+  "name": "resumesh-client-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "db:link": "./scripts/supabase.sh link",
+    "db:push": "./scripts/supabase.sh push",
+    "db:pull": "./scripts/supabase.sh pull",
+    "db:new": "./scripts/supabase.sh new",
+    "db:status": "./scripts/supabase.sh status",
+    "db:start": "./scripts/supabase.sh start",
+    "db:stop": "./scripts/supabase.sh stop"
+  }
+}

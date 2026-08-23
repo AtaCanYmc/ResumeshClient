@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from resumesh_core.schemas.skill import SkillResponse
-from resumesh_storage.db import get_db
-from resumesh_storage.models.skill import Skill
+from resumesh_client.schemas.skill import SkillResponse
+from resumesh_client.db import get_db
+from resumesh_client.models.skill import Skill
 
 router = APIRouter(prefix="/api/v1/skills", tags=["Skills"])
 
