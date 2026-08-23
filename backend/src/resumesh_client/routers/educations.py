@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/educations", tags=["Educations"])
 
 
 @router.get("", response_model=List[EducationResponse])
-async def list_educations(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_educations(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Education).offset(skip).limit(limit).all()
 
 

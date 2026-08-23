@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/projects", tags=["Projects"])
 
 
 @router.get("", response_model=List[ProjectResponse])
-async def list_projects(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_projects(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Project).offset(skip).limit(limit).all()
 
 

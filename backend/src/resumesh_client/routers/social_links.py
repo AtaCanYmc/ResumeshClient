@@ -10,5 +10,7 @@ router = APIRouter(prefix="/api/v1/social-links", tags=["Social Links"])
 
 
 @router.get("", response_model=List[SocialLinkResponse])
-async def list_social_links(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_social_links(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(SocialLink).offset(skip).limit(limit).all()

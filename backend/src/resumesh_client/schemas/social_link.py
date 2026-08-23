@@ -6,7 +6,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class SocialLinkBase(BaseModel):
     id: Optional[str] = None
-    platform: str = Field(..., description="Platform name e.g. github, linkedin, devto, medium")
+    platform: str = Field(
+        ..., description="Platform name e.g. github, linkedin, devto, medium"
+    )
     label: str = Field(..., description="Display label for social link")
     url: str = Field(..., description="Full URL to the social media profile")
     icon: Optional[str] = Field(None, description="Optional icon name")

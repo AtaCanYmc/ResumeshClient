@@ -12,10 +12,17 @@ from resumesh_client.config import settings
 
 Base = declarative_base()
 
-raw_db_url = os.getenv("DATABASE_URL") or os.getenv("SUPABASE_DATABASE_URL") or settings.DATABASE_URL or ""
+raw_db_url = (
+    os.getenv("DATABASE_URL")
+    or os.getenv("SUPABASE_DATABASE_URL")
+    or settings.DATABASE_URL
+    or ""
+)
 
 if not raw_db_url:
-    raise ValueError("DATABASE_URL is not configured. Please define DATABASE_URL in your environment or .env file.")
+    raise ValueError(
+        "DATABASE_URL is not configured. Please define DATABASE_URL in your environment or .env file."
+    )
 
 # Normalize legacy postgres:// scheme to postgresql:// required by SQLAlchemy 2.0
 if raw_db_url.startswith("postgres://"):

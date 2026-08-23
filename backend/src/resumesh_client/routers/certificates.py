@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/certificates", tags=["Certificates"])
 
 
 @router.get("", response_model=List[CertificateResponse])
-async def list_certificates(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_certificates(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Certificate).offset(skip).limit(limit).all()
 
 

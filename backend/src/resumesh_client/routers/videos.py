@@ -10,5 +10,7 @@ router = APIRouter(prefix="/api/v1/videos", tags=["Videos"])
 
 
 @router.get("", response_model=List[VideoResponse])
-async def list_videos(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_videos(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Video).offset(skip).limit(limit).all()

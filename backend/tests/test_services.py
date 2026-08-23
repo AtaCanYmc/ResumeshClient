@@ -3,6 +3,7 @@ import uuid
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
 from resumesh_client.db import SessionLocal
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.repositories.article import ArticleRepository
@@ -26,7 +27,9 @@ def test_settings_store_defaults_and_overrides():
 
         # Add custom DB setting override with unique key to avoid collision
         unique_key = f"custom_setting_{uuid.uuid4()}"
-        custom_setting = AppSetting(key=unique_key, value=json.dumps({"email": "custom@resumesh.dev"}))
+        custom_setting = AppSetting(
+            key=unique_key, value=json.dumps({"email": "custom@resumesh.dev"})
+        )
         db.add(custom_setting)
         db.commit()
 
@@ -59,7 +62,9 @@ async def test_ingestion_service_github_flow():
         mock_item.language = "Python"
         mock_item.tags = ["ai", "fastapi"]
 
-        with patch("resumesh_scrapers.GitHubScraper.fetch_data", new_callable=AsyncMock) as mock_fetch:
+        with patch(
+            "resumesh_scrapers.GitHubScraper.fetch_data", new_callable=AsyncMock
+        ) as mock_fetch:
             mock_fetch.return_value = [mock_item]
             await IngestionService.fetch_github_repos("testuser", repo)
 
@@ -81,7 +86,9 @@ async def test_ingestion_service_devto_flow():
         mock_item.summary = "Summary of article"
         mock_item.url = "https://dev.to/test/article-unique-123"
 
-        with patch("resumesh_scrapers.DevToScraper.fetch_data", new_callable=AsyncMock) as mock_fetch:
+        with patch(
+            "resumesh_scrapers.DevToScraper.fetch_data", new_callable=AsyncMock
+        ) as mock_fetch:
             mock_fetch.return_value = [mock_item]
             await IngestionService.fetch_devto_articles("testuser", repo)
 

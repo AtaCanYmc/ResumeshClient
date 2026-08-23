@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/settings", tags=["Settings"])
 
 @router.get("", response_model=AppSettingsResponse)
 async def get_settings(response: Response, db: Session = Depends(get_db)):
-    response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=60"
+    response.headers["Cache-Control"] = (
+        "public, max-age=3600, stale-while-revalidate=60"
+    )
     raw = get_all_settings(db)
     return AppSettingsResponse(
         sections=raw.get("sections"),

@@ -8,7 +8,9 @@ from resumesh_client.db import Base
 class SystemLog(Base):
     __tablename__ = "system_logs"
 
-    id = Column(String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
+    id = Column(
+        String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4())
+    )
     level = Column(String(20), nullable=False)
     module = Column(String(100), nullable=False)
     message = Column(Text, nullable=False)

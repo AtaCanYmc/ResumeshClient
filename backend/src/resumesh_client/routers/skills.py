@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/skills", tags=["Skills"])
 
 
 @router.get("", response_model=List[SkillResponse])
-async def list_skills(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_skills(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Skill).offset(skip).limit(limit).all()
 
 

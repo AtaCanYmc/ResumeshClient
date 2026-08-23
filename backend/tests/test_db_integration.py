@@ -2,6 +2,9 @@ import json
 import uuid
 
 import pytest
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
+
 from resumesh_client.db import SessionLocal, engine
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.models.article import Article
@@ -17,8 +20,6 @@ from resumesh_client.models.skill import Skill
 from resumesh_client.models.social_link import SocialLink
 from resumesh_client.models.system_log import SystemLog
 from resumesh_client.models.video import Video
-from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
 
 
 def test_database_engine_connectivity():
@@ -47,7 +48,9 @@ def test_db_session_commit_and_rollback():
         proj2 = Project(name="Rollback Project")
         db.add(proj2)
         db.rollback()
-        uncommitted = db.query(Project).filter(Project.name == "Rollback Project").first()
+        uncommitted = (
+            db.query(Project).filter(Project.name == "Rollback Project").first()
+        )
         assert uncommitted is None
     finally:
         db.close()
@@ -120,11 +123,15 @@ def test_all_models_crud():
         db.add(sec)
 
         # 12. AppSetting
-        app_set = AppSetting(key=f"test_unique_key_{uuid.uuid4()}", value=json.dumps({"theme": "dark"}))
+        app_set = AppSetting(
+            key=f"test_unique_key_{uuid.uuid4()}", value=json.dumps({"theme": "dark"})
+        )
         db.add(app_set)
 
         # 13. SystemLog
-        sys_log = SystemLog(level="INFO", module="client-backend", message="Test Log Message")
+        sys_log = SystemLog(
+            level="INFO", module="client-backend", message="Test Log Message"
+        )
         db.add(sys_log)
 
         # 14. GeneratedCV
@@ -143,16 +150,26 @@ def test_all_models_crud():
         assert db.query(Article).filter(Article.id == art.id).first() is not None
         assert db.query(Experience).filter(Experience.id == exp.id).first() is not None
         assert db.query(Education).filter(Education.id == edu.id).first() is not None
-        assert db.query(Certificate).filter(Certificate.id == cert.id).first() is not None
+        assert (
+            db.query(Certificate).filter(Certificate.id == cert.id).first() is not None
+        )
         assert db.query(Skill).filter(Skill.id == sk.id).first() is not None
         assert db.query(Package).filter(Package.id == pkg.id).first() is not None
         assert db.query(Post).filter(Post.id == pst.id).first() is not None
         assert db.query(Video).filter(Video.id == vid.id).first() is not None
         assert db.query(SocialLink).filter(SocialLink.id == soc.id).first() is not None
         assert db.query(Section).filter(Section.id == sec.id).first() is not None
-        assert db.query(AppSetting).filter(AppSetting.key == app_set.key).first() is not None
-        assert db.query(SystemLog).filter(SystemLog.id == sys_log.id).first() is not None
-        assert db.query(GeneratedCV).filter(GeneratedCV.id == cv_item.id).first() is not None
+        assert (
+            db.query(AppSetting).filter(AppSetting.key == app_set.key).first()
+            is not None
+        )
+        assert (
+            db.query(SystemLog).filter(SystemLog.id == sys_log.id).first() is not None
+        )
+        assert (
+            db.query(GeneratedCV).filter(GeneratedCV.id == cv_item.id).first()
+            is not None
+        )
     finally:
         db.close()
 

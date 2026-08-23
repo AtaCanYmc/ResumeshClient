@@ -6,12 +6,7 @@ Orchestrates platform scrapers and persists data to database/storage repositorie
 import logging
 from typing import Optional
 
-from resumesh_scrapers import (
-    DevToScraper,
-    GitHubScraper,
-    MediumScraper,
-    ScraperError,
-)
+from resumesh_scrapers import DevToScraper, GitHubScraper, MediumScraper, ScraperError
 
 from resumesh_client.repositories.article import IArticleRepository
 from resumesh_client.repositories.project import IProjectRepository
@@ -31,7 +26,9 @@ class IngestionService:
     ):
         scraper = GitHubScraper()
         try:
-            items = await scraper.fetch_data(username, pat=pat, include_forks=include_forks)
+            items = await scraper.fetch_data(
+                username, pat=pat, include_forks=include_forks
+            )
             for item in items:
                 proj = ProjectCreate(
                     name=item.name or item.title or "",
@@ -41,7 +38,8 @@ class IngestionService:
                     stars=item.stargazers_count or item.stars or 0,
                     watchers=item.watchers_count or item.watchers or 0,
                     forks=item.forks_count or item.forks or 0,
-                    languages=item.languages or ([item.language] if item.language else []),
+                    languages=item.languages
+                    or ([item.language] if item.language else []),
                     tags=item.tags or [],
                 )
                 await provider.upsert_project(proj)
@@ -49,7 +47,9 @@ class IngestionService:
             logger.warning(f"GitHub scraper error for {username}: {exc}")
 
     @staticmethod
-    async def fetch_devto_articles(username: str, provider: IArticleRepository, api_key: Optional[str] = None):
+    async def fetch_devto_articles(
+        username: str, provider: IArticleRepository, api_key: Optional[str] = None
+    ):
         scraper = DevToScraper()
         try:
             items = await scraper.fetch_data(username, api_key=api_key)

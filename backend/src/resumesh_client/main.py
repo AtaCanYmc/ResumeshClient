@@ -36,9 +36,19 @@ logger = logging.getLogger(__name__)
 try:
     Base.metadata.create_all(bind=engine)
     with engine.connect() as conn:
-        conn.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS title VARCHAR(255);"))
-        conn.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS languages JSONB DEFAULT '[]'::jsonb;"))
-        conn.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS tags JSONB DEFAULT '[]'::jsonb;"))
+        conn.execute(
+            text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS title VARCHAR(255);")
+        )
+        conn.execute(
+            text(
+                "ALTER TABLE projects ADD COLUMN IF NOT EXISTS languages JSONB DEFAULT '[]'::jsonb;"
+            )
+        )
+        conn.execute(
+            text(
+                "ALTER TABLE projects ADD COLUMN IF NOT EXISTS tags JSONB DEFAULT '[]'::jsonb;"
+            )
+        )
         conn.commit()
 except Exception as exc:
     logger.warning(f"Database table creation/migration skipped/delayed: {exc}")

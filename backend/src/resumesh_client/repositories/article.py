@@ -17,11 +17,15 @@ class IArticleRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_all_articles(self, skip: int = 0, limit: int = 100) -> List[ArticleResponse]:
+    async def get_all_articles(
+        self, skip: int = 0, limit: int = 100
+    ) -> List[ArticleResponse]:
         pass
 
     @abstractmethod
-    async def update_article(self, article_id: str, article: ArticleUpdate) -> Optional[ArticleResponse]:
+    async def update_article(
+        self, article_id: str, article: ArticleUpdate
+    ) -> Optional[ArticleResponse]:
         pass
 
     @abstractmethod
@@ -46,14 +50,20 @@ class ArticleRepository(IArticleRepository):
         self.db.refresh(item)
         return ArticleResponse.model_validate(item)
 
-    async def get_all_articles(self, skip: int = 0, limit: int = 100) -> List[ArticleResponse]:
+    async def get_all_articles(
+        self, skip: int = 0, limit: int = 100
+    ) -> List[ArticleResponse]:
         items = self.db.query(Article).offset(skip).limit(limit).all()
         return [ArticleResponse.model_validate(i) for i in items]
 
-    async def list_articles(self, skip: int = 0, limit: int = 100) -> List[ArticleResponse]:
+    async def list_articles(
+        self, skip: int = 0, limit: int = 100
+    ) -> List[ArticleResponse]:
         return await self.get_all_articles(skip=skip, limit=limit)
 
-    async def update_article(self, article_id: str, article: ArticleUpdate) -> Optional[ArticleResponse]:
+    async def update_article(
+        self, article_id: str, article: ArticleUpdate
+    ) -> Optional[ArticleResponse]:
         item = self.db.query(Article).filter(Article.id == article_id).first()
         if not item:
             return None

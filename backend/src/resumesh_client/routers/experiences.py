@@ -10,7 +10,9 @@ router = APIRouter(prefix="/api/v1/experiences", tags=["Experiences"])
 
 
 @router.get("", response_model=List[ExperienceResponse])
-async def list_experiences(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_experiences(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Experience).offset(skip).limit(limit).all()
 
 

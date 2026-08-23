@@ -46,4 +46,6 @@ class ScraperDomainError(DomainException):
     """Exception raised when a scraping operation fails."""
 
     def __init__(self, platform: str, reason: str, status_code: int = 500):
-        super().__init__(f"Scraping failed for {platform}: {reason}", status_code=status_code)
+        super().__init__(
+            f"Scraping failed for {platform}: {reason}", status_code=status_code
+        )
