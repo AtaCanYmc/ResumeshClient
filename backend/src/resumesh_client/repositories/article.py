@@ -4,6 +4,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from resumesh_client.models.article import Article
+from resumesh_client.repositories.base import BaseRepository
 from resumesh_client.schemas.article import (
     ArticleCreate,
     ArticleResponse,
@@ -33,9 +34,20 @@ class IArticleRepository(ABC):
         pass
 
 
-class ArticleRepository(IArticleRepository):
+class ArticleRepository(BaseRepository[Article], IArticleRepository):
     def __init__(self, db: Session):
-        self.db = db
+        super().__init__(db, Article)
+
+    def search_by_term(self, term: str) -> List[Article]:
+        wildcard_term = f"%{term}%"
+        return (
+            self.db.query(Article)
+            .filter(
+                Article.title.ilike(wildcard_term)
+                | Article.summary.ilike(wildcard_term)
+            )
+            .all()
+        )
 
     async def upsert_article(self, article: ArticleCreate) -> ArticleResponse:
         existing = self.db.query(Article).filter(Article.url == article.url).first()

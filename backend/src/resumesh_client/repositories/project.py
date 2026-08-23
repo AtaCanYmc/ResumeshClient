@@ -4,6 +4,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from resumesh_client.models.project import Project
+from resumesh_client.repositories.base import BaseRepository
 from resumesh_client.schemas.project import (
     ProjectCreate,
     ProjectResponse,
@@ -41,9 +42,20 @@ class IProjectRepository(ABC):
         pass
 
 
-class ProjectRepository(IProjectRepository):
+class ProjectRepository(BaseRepository[Project], IProjectRepository):
     def __init__(self, db: Session):
-        self.db = db
+        super().__init__(db, Project)
+
+    def search_by_term(self, term: str) -> List[Project]:
+        wildcard_term = f"%{term}%"
+        return (
+            self.db.query(Project)
+            .filter(
+                Project.name.ilike(wildcard_term)
+                | Project.description.ilike(wildcard_term)
+            )
+            .all()
+        )
 
     async def create_project(self, project: ProjectCreate) -> ProjectResponse:
         item = Project(**project.model_dump(exclude_unset=True))
