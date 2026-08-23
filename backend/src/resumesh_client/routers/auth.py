@@ -27,7 +27,7 @@ async def login(payload: LoginRequest, response: Response):
     secret_key = (
         settings.SUPABASE_JWT_SECRET or "resumesh_secret_key_development_only_123"
     )
-    exp = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+    exp = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
     token_payload = {
         "sub": "admin-1",
         "email": payload.email,

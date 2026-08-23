@@ -4,9 +4,9 @@
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/Frontend-React_19-61DAFB.svg?style=flat&logo=react&logoColor=black)](https://react.dev/)
 
-This repository contains the visitor-facing client application and API backend powering ResuMesh:
-- **`backend/`**: Python FastAPI REST API service (`resumesh-client`).
+This repository contains the standalone **ResuMesh Client** application, housing both the visitor-facing web interface and the public REST API service:
 - **`frontend/`**: Visitor-facing React + Vite + TypeScript web application (`resumesh-web`).
+- **`backend/`**: Python FastAPI REST API service (`resumesh-client`).
 
 ---
 
@@ -35,28 +35,28 @@ ResumeshClient/
 
 ### Option A: Running with Docker Compose
 
-Spin up both frontend and backend services:
+Spin up both frontend and backend services simultaneously:
 ```bash
 docker compose up --build
 ```
-- **Visitor Portal (UI)**: `http://localhost:8080`
+- **Visitor Web Portal (UI)**: `http://localhost:8080`
 - **Client Backend API**: `http://localhost:8000`
-- **Swagger Documentation**: `http://localhost:8000/docs`
+- **Interactive OpenAPI (Swagger) Docs**: `http://localhost:8000/docs`
 
 ---
 
-### Option B: Local Manual Development
+### Option B: Local Manual Development Setup
 
 #### 1. Backend Service (`backend/`)
 ```bash
 cd backend
-python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -e /path/to/resumesh-core -e /path/to/resumesh-storage -e /path/to/resumesh-scrapers -e .
 uvicorn resumesh_client.main:app --host 0.0.0.0 --port 8000 --reload
+# veya sanal ortamı aktifleştirmeden:
+# .venv/bin/uvicorn resumesh_client.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-#### 2. Frontend Service (`frontend/`)
+#### 2. Frontend Application (`frontend/`)
 ```bash
 cd frontend
 npm install
@@ -65,22 +65,23 @@ npm run dev
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing & Code Quality
 
-### Backend Unit Tests
+### Backend Unit Tests (Pytest)
 ```bash
 cd backend
 .venv/bin/pytest tests -v
 ```
 
-### Frontend Build & Lint
+### Frontend Build & Lint (Vite + Oxlint)
 ```bash
 cd frontend
 npm run build
+npm run test
 ```
 
 ---
 
 ## 📄 License
 
-Distributed under the Apache License 2.0. See `LICENSE` for more information.
+Distributed under the Apache License 2.0. See [LICENSE](LICENSE) for more information.

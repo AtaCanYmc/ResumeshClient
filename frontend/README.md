@@ -1,58 +1,68 @@
-# 🖥️ ResuMesh - Visitor Portfolio UI
+# 🖥️ ResuMesh Client - Visitor Portfolio UI
 
-This is the public visitor-facing frontend interface for ResuMesh. It is designed as a modern dark-themed single-page application (SPA) using **React**, **Vite**, and **TypeScript** for recruiters to view skills, projects, and articles.
+This directory contains the visitor-facing React single-page web application (`resumesh-web`) for ResuMesh, located inside the **ResumeshClient** monorepo (`frontend/`).
 
-> [!NOTE]
-> All administrative control panel dashboards and forms (login, CV generation, scrapers, LinkedIn imports) have been separated and moved to the administrative frontend located under [admin/frontend](../admin/frontend).
+It is built with **React**, **Vite**, **TypeScript**, and **Tailwind CSS** for recruiters and visitors to browse skills, projects, certificates, experiences, and articles.
+
+---
 
 ## 🛠️ Tech Stack & Tooling
-- **Build Tool:** Vite
+
+- **Framework:** React 19 + Vite 8
 - **Language:** TypeScript (`StrictMode` enforced)
 - **Styling:** Tailwind CSS + Lucide React Icons
-- **Linter:** Oxlint (High-performance JS/TS linter)
+- **Linter & Code Quality:** Oxlint + Prettier
+- **UI Sandbox:** Storybook 10
+- **Testing:** Vitest + React Testing Library
+
+---
 
 ## 🚀 Local Development Setup
 
 ### Prerequisites
 - Node.js 20+
+- Running `backend/` service on `http://localhost:8000` (optional for live data)
 
-### Installation Steps
-1. Navigate to the frontend directory:
+### Installation & Execution
+
+1. **Navigate to the frontend directory:**
    ```bash
    cd frontend
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. Create your local configuration by copying `.env.example`:
+3. **Environment Setup:**
    ```bash
    cp .env.example .env
    ```
 
-4. Start the Vite development server:
+4. **Start Vite Development Server:**
    ```bash
-   npm run dev -- --port 3000
+   npm run dev
    ```
 
-Open `http://localhost:3000` in your browser.
+Open [http://localhost:8080](http://localhost:8080) (or the port indicated by Vite) in your browser.
 
 ---
 
-## 📚 Component Documentation & Testing
+## 📚 Component Sandbox & Testing
 
-Storybook is integrated to document and develop UI components in isolation:
-- **Run Storybook Server**:
-  ```bash
-  npm run storybook
-  ```
-  *Opens the interactive sandbox catalog at `http://localhost:6006`.*
+### Storybook UI Component Catalog
+```bash
+npm run storybook
+```
+*Launches Storybook at `http://localhost:6006`.*
 
-### 🧪 Frontend Test Execution (Vitest)
-We use **Vitest** + **React Testing Library** for unit checks:
-- **Run all tests (headless)**:
-  ```bash
-  npm run test
-  ```
+### Running Vitest Unit Tests
+```bash
+npm run test
+```
+
+### Production Build
+```bash
+npm run build
+```

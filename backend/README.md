@@ -1,33 +1,31 @@
-# ⚡ ResuMesh Client Backend API
+# ⚡ ResuMesh Client - Backend API Service
 
-[![Apache License 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+This directory contains the standalone **ResuMesh Client Backend API** service (`resumesh-client`), located inside the **ResumeshClient** monorepo (`backend/`).
 
-This repository contains the standalone **ResuMesh Client Backend API** service (`resumesh-client`). It powers all visitor-facing and client-side portfolio read/write operations, CV tailoring requests, search querying, and content delivery for ResuMesh.
+It powers all visitor-facing REST endpoints, search filtering, article retrieval, project queries, CV PDF generation, and public content delivery.
 
 ---
 
 ## 🏗️ System Architecture
 
 `resumesh-client` is built with **FastAPI** and integrates cleanly with:
-- **`resumesh-core`**: Core settings, schemas, and error handling abstractions.
-- **`resumesh-storage`**: Database ORM models, Supabase/SQLAlchemy repositories, and data access layers.
-- **`resumesh-scrapers`**: Modular scrapers framework for developer profiles.
+- **`resumesh-core`**: Configuration settings, error handling, and domain schemas.
+- **`resumesh-storage`**: Database ORM models, SQLAlchemy/Supabase repositories, and data access layers.
+- **`resumesh-scrapers`**: Modular profile data scrapers framework.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Local Development Setup
 
 ### Prerequisites
 - Python 3.10+
 - Virtualenv
 
-### Local Development Setup
+### Installation & Execution Steps
 
-1. **Clone the repository:**
+1. **Navigate to the backend directory:**
    ```bash
-   git clone https://github.com/AtaCanYmc/ResumeshClient.git
-   cd ResumeshClient
+   cd backend
    ```
 
 2. **Create and activate a virtual environment:**
@@ -36,31 +34,32 @@ This repository contains the standalone **ResuMesh Client Backend API** service 
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-3. **Install dependencies:**
+3. **Install dependencies in editable mode:**
    ```bash
-   pip install -e .
+   pip install -e /path/to/resumesh-core -e /path/to/resumesh-storage -e /path/to/resumesh-scrapers -e .
    ```
 
-4. **Run the server:**
+4. **Start the local server:**
    ```bash
+   source .venv/bin/activate
    uvicorn resumesh_client.main:app --host 0.0.0.0 --port 8000 --reload
+   # veya doğrudan sanal ortam uvicorn binary'si ile:
+   .venv/bin/uvicorn resumesh_client.main:app --host 0.0.0.0 --port 8000 --reload
    ```
 
-Once running:
-- **API Base URL**: `http://localhost:8000`
-- **Interactive Swagger Documentation**: `http://localhost:8000/docs`
-- **ReDoc Documentation**: `http://localhost:8000/redoc`
+---
+
+## 📖 Interactive API Documentation
+
+Once running, access docs from your browser:
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Testing
 
+Run pytest suite:
 ```bash
-pytest tests -v
+.venv/bin/pytest tests -v
 ```
-
----
-
-## 📄 License
-
-Distributed under the Apache License 2.0. See `LICENSE` for more information.
