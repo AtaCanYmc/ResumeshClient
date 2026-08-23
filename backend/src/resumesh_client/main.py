@@ -2,6 +2,7 @@
 ResuMesh Client API Entrypoint - Read-Only Visitor REST Service
 """
 
+import logging
 import resumesh_client.models  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,7 +28,12 @@ from resumesh_client.routers import (
     videos,
 )
 
-Base.metadata.create_all(bind=engine)
+logger = logging.getLogger(__name__)
+
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as exc:
+    logger.warning(f"Database table creation skipped/delayed: {exc}")
 
 app = FastAPI(
     title=settings.APP_NAME,

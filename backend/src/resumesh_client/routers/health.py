@@ -4,5 +4,7 @@ router = APIRouter(tags=["Health"])
 
 
 @router.get("/health")
+@router.get("/api/v1/health")
+@router.get("/api/v1/health/")
 async def health_check():
-    return {"status": "ok", "service": "resumesh-api", "version": "0.1.0"}
+    return {"status": "ok", "service": "resumesh-api", "version": "1.0.0"}

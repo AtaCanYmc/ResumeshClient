@@ -29,3 +29,10 @@ yarn-error.log*
 .DS_Store
 *.swp
 *.swo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.production.example
