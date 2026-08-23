@@ -1,8 +1,8 @@
 import pytest
-import resumesh_client.models  # noqa: F401
+import models  # noqa: F401
 from fastapi.testclient import TestClient
-from resumesh_client.main import app
-from resumesh_client.db import Base, engine
+from main import app
+from db import Base, engine
 
 
 @pytest.fixture(autouse=True)
