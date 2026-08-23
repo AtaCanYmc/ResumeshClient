@@ -1,14 +1,17 @@
 """
 settings_store.py — Storage helper for settings, sections, and social_links tables.
-Sections and socials are read exclusively from dedicated database tables.
+Provides robust fallback defaults if database query fails or tables are empty.
 """
 
 import json
+import logging
 from typing import Any, Dict, List
 from sqlalchemy.orm import Session
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.models.section import Section
 from resumesh_client.models.social_link import SocialLink
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_SECTIONS: Dict[str, bool] = {
     "educations": True,
@@ -160,42 +163,53 @@ KV_DEFAULTS: Dict[str, Any] = {
 
 
 def get_all_settings(db: Session) -> Dict[str, Any]:
-    rows = db.query(AppSetting).all()
     stored = {}
-    for row in rows:
-        if isinstance(row.value, str):
-            try:
-                stored[row.key] = json.loads(row.value)
-            except Exception:
+    try:
+        rows = db.query(AppSetting).all()
+        for row in rows:
+            if isinstance(row.value, str):
+                try:
+                    stored[row.key] = json.loads(row.value)
+                except Exception:
+                    stored[row.key] = row.value
+            else:
                 stored[row.key] = row.value
-        else:
-            stored[row.key] = row.value
+    except Exception as exc:
+        logger.warning(f"Failed to query app_settings from DB: {exc}")
 
     result = {**KV_DEFAULTS, **stored}
 
     # Fetch sections from sections table
-    db_sections = db.query(Section).order_by(Section.order_index.asc()).all()
-    if db_sections:
-        result["sections"] = {s.key: s.is_active for s in db_sections}
-    else:
+    try:
+        db_sections = db.query(Section).order_by(Section.order_index.asc()).all()
+        if db_sections:
+            result["sections"] = {s.key: s.is_active for s in db_sections}
+        else:
+            result["sections"] = DEFAULT_SECTIONS
+    except Exception as exc:
+        logger.warning(f"Failed to query sections from DB: {exc}")
         result["sections"] = DEFAULT_SECTIONS
 
     # Fetch socials from social_links table
-    db_socials = db.query(SocialLink).order_by(SocialLink.order_index.asc()).all()
-    if db_socials:
-        result["socials"] = [
-            {
-                "id": s.id,
-                "platform": s.platform,
-                "label": s.label,
-                "url": s.url,
-                "icon": s.icon,
-                "order_index": s.order_index,
-                "is_active": s.is_active,
-            }
-            for s in db_socials
-        ]
-    else:
+    try:
+        db_socials = db.query(SocialLink).order_by(SocialLink.order_index.asc()).all()
+        if db_socials:
+            result["socials"] = [
+                {
+                    "id": s.id,
+                    "platform": s.platform,
+                    "label": s.label,
+                    "url": s.url,
+                    "icon": s.icon,
+                    "order_index": s.order_index,
+                    "is_active": s.is_active,
+                }
+                for s in db_socials
+            ]
+        else:
+            result["socials"] = DEFAULT_SOCIALS
+    except Exception as exc:
+        logger.warning(f"Failed to query social_links from DB: {exc}")
         result["socials"] = DEFAULT_SOCIALS
 
     return result

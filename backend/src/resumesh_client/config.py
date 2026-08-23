@@ -1,5 +1,6 @@
 """
 ResuMesh Client Configuration Settings
+Simplified configuration reading exclusively from environment variables or .env files.
 """
 
 import json
@@ -9,24 +10,21 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class CoreSettings(BaseSettings):
-    APP_NAME: str = "ResuMesh Client"
+    # Core API Settings
+    APP_NAME: str = "ResuMesh Client API"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     LOG_LEVEL: str = "INFO"
     CORS_ORIGINS: Union[List[str], str] = ["*"]
-    SENTRY_DSN: Optional[str] = None
 
-    # Supabase Database & Storage
-    SUPABASE_URL: Optional[str] = "https://ahrbyydizkchgoocsifx.supabase.co"
-    SUPABASE_KEY: Optional[str] = "sb_publishable_dJd-NCXuVoECVs4o4uvmKQ_MDp-KSw1"
-    SUPABASE_SERVICE_ROLE_KEY: Optional[str] = None
-    SUPABASE_JWT_SECRET: Optional[str] = None
-    DATABASE_URL: str = "postgresql://postgres:postgres@db.ahrbyydizkchgoocsifx.supabase.co:5432/postgres"
+    # Supabase Database & Storage Settings
+    DATABASE_URL: Optional[str] = None
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_KEY: Optional[str] = None
 
-    # Scrapers
+    # Platform Scraper Keys (Optional)
     GITHUB_PAT: Optional[str] = None
     DEVTO_API_KEY: Optional[str] = None
-    BEHANCE_API_KEY: Optional[str] = None
 
     @field_validator("CORS_ORIGINS", mode="after")
     @classmethod
