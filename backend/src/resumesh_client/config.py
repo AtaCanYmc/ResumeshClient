@@ -17,11 +17,11 @@ class CoreSettings(BaseSettings):
     SENTRY_DSN: Optional[str] = None
 
     # Supabase Database & Storage
-    SUPABASE_URL: Optional[str] = None
-    SUPABASE_KEY: Optional[str] = None
+    SUPABASE_URL: Optional[str] = "https://ahrbyydizkchgoocsifx.supabase.co"
+    SUPABASE_KEY: Optional[str] = "sb_publishable_dJd-NCXuVoECVs4o4uvmKQ_MDp-KSw1"
     SUPABASE_SERVICE_ROLE_KEY: Optional[str] = None
     SUPABASE_JWT_SECRET: Optional[str] = None
-    DATABASE_URL: str = "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+    DATABASE_URL: str = "postgresql://postgres:postgres@db.ahrbyydizkchgoocsifx.supabase.co:5432/postgres"
 
     # Scrapers
     GITHUB_PAT: Optional[str] = None
