@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Heart, ChevronUp, ChevronDown } from 'lucide-react';
+import { Mail, ChevronUp, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useContentConfig } from '../hooks/useHomeData';
@@ -13,48 +13,44 @@ const Footer: React.FC = () => {
   if (!config) return null;
 
   return (
-    <footer className="mt-24 border-t border-gray-200 bg-white pt-8 pb-8 dark:border-gray-800 dark:bg-black/40">
-      <div className="container mx-auto max-w-6xl px-4">
+    <footer className="mt-20 border-t border-zinc-800/80 bg-zinc-950 py-8">
+      <div className="container mx-auto max-w-5xl px-4">
         <AnimatePresence initial={false}>
           {isExpanded && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="mb-12 grid grid-cols-1 gap-12 pt-4 md:grid-cols-2">
-                {/* About Section */}
-                <div className="space-y-4">
-                  <h3 className="flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white">
-                    <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
-                      ResuMesh
-                    </span>
+              <div className="mb-10 grid grid-cols-1 gap-8 pt-2 md:grid-cols-2">
+                <div className="space-y-3">
+                  <h3 className="font-mono text-lg font-bold text-zinc-100">
+                    ResuMesh<span className="text-zinc-500">.</span>
                   </h3>
-                  <p className="max-w-md leading-relaxed text-gray-600 dark:text-gray-400">
-                    <strong className="mb-2 block text-gray-800 dark:text-gray-200">
+                  <p className="max-w-md text-xs leading-relaxed text-zinc-400">
+                    <strong className="mb-1 block font-mono text-zinc-200">
                       {t('footer.aboutTitle')}
                     </strong>
                     {t('footer.aboutText')}
                   </p>
                 </div>
 
-                {/* Connect Section */}
                 <div className="md:text-right">
-                  <h3 className="mb-6 text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="mb-4 font-mono text-base font-bold text-zinc-100">
                     {t('footer.connect')}
                   </h3>
-                  <div className="flex flex-col gap-4 md:items-end">
+                  <div className="flex flex-col gap-3 md:items-end">
                     <a
                       href={`mailto:${config.footer.email}`}
-                      className="flex w-fit items-center gap-2 text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                      className="flex w-fit items-center gap-2 font-mono text-xs text-zinc-400 transition-colors hover:text-zinc-100"
                     >
-                      <Mail size={18} />
+                      <Mail size={15} />
                       <span>{config.footer.email}</span>
                     </a>
 
-                    <div className="mt-2 flex items-center gap-4">
+                    <div className="mt-1 flex items-center gap-2">
                       {config.socials.map((social) => {
                         const Icon = getIcon(social.icon || social.platform);
                         return (
@@ -63,10 +59,10 @@ const Footer: React.FC = () => {
                             href={social.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="rounded-lg bg-gray-100 p-2.5 text-gray-600 transition-all hover:bg-blue-50 hover:text-blue-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-400"
+                            className="rounded-md border border-zinc-800 bg-zinc-900 p-2 text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-100"
                             aria-label={social.label}
                           >
-                            <Icon size={20} />
+                            <Icon size={16} />
                           </a>
                         );
                       })}
@@ -78,37 +74,25 @@ const Footer: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* Bottom Bar */}
         <div
-          className={`flex flex-col items-center justify-between transition-all duration-300 md:flex-row ${isExpanded ? 'border-t border-gray-200 pt-8 dark:border-gray-800' : ''} text-sm text-gray-500 dark:text-gray-500`}
+          className={`flex flex-col items-center justify-between gap-4 font-mono text-xs text-zinc-500 md:flex-row ${
+            isExpanded ? 'border-t border-zinc-800/80 pt-6' : ''
+          }`}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <p>
               © {new Date().getFullYear()} {config.hero.name}. {t('footer.allRightsReserved')}
             </p>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded-full bg-gray-100 p-1.5 text-gray-600 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+              className="rounded-md border border-zinc-800 bg-zinc-900 p-1 text-zinc-400 transition-colors hover:text-zinc-100 focus:outline-none"
               aria-label={isExpanded ? 'Daralt' : 'Genişlet'}
               title={isExpanded ? 'Daralt' : 'Genişlet'}
             >
-              {isExpanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+              {isExpanded ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
             </button>
           </div>
-          <p className="mt-4 flex items-center gap-1.5 md:mt-0">
-            {i18n.language === 'tr' ? (
-              <>
-                {config.hero.name} tarafından{' '}
-                <Heart size={14} className="animate-pulse fill-red-500 text-red-500" /> ile
-                geliştirildi
-              </>
-            ) : (
-              <>
-                {t('footer.builtWith')} <Heart size={14} className="fill-red-500 text-red-500" />{' '}
-                {t('footer.by')} {config.hero.name}
-              </>
-            )}
-          </p>
+          <p className="flex items-center gap-1">{config.hero.name} • ResuMesh Engine v1.0</p>
         </div>
       </div>
     </footer>

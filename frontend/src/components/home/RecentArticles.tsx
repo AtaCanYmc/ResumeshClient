@@ -1,8 +1,7 @@
 import React from 'react';
-import { ExternalLink, BookOpen } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import SpotlightCard from '../ui/SpotlightCard';
 import { useArticles } from '../../hooks/useHomeData';
 import { ArticlesSkeleton } from '../ui/Skeletons';
 
@@ -11,14 +10,14 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.08,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
 export default function RecentArticles() {
@@ -33,86 +32,52 @@ export default function RecentArticles() {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-100px' }}
-      className="pt-12"
+      viewport={{ once: true, margin: '-60px' }}
+      className="py-10"
     >
-      <div className="mx-auto mb-12 max-w-2xl text-center">
-        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-          <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-500">
-            {t('home.recentArticles')}
-          </span>
+      <div className="mb-8">
+        <h2 className="font-mono text-2xl font-bold tracking-tight text-zinc-100 sm:text-3xl">
+          {t('home.recentArticles')}
         </h2>
-        <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">{t('articles.subtitle')}</p>
+        <p className="mt-1 font-mono text-xs text-zinc-400">{t('articles.subtitle')}</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         {articles.map((article: any) => {
-          const getSpotlightColor = (color?: string) => {
-            switch (color) {
-              case 'blue':
-                return 'rgba(59, 130, 246, 0.15)';
-              case 'indigo':
-                return 'rgba(99, 102, 241, 0.15)';
-              case 'purple':
-                return 'rgba(168, 85, 247, 0.15)';
-              default:
-                return 'rgba(156, 163, 175, 0.15)';
-            }
-          };
-
-          const PlatformLogo = () => {
-            if (article.platform === 'Medium') {
-              return (
-                <div className="flex items-center gap-1.5 rounded-md bg-black px-2.5 py-1 text-xs font-bold text-white">
-                  Medium
-                </div>
-              );
-            }
-            if (article.platform === 'Dev.to') {
-              return (
-                <div className="flex items-center gap-1.5 rounded-md bg-gray-900 px-2.5 py-1 text-xs font-bold text-white">
-                  DEV
-                </div>
-              );
-            }
-            return null;
-          };
-
           return (
             <motion.div variants={itemVariants} key={article.id} className="h-full">
-              <SpotlightCard spotlightColor={getSpotlightColor(article.color)} className="h-full">
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-gray-800 dark:bg-gray-900"
-                >
-                  <div className="mb-4 flex items-center justify-between">
-                    <PlatformLogo />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {article.published_at
-                        ? new Date(article.published_at).toLocaleDateString()
-                        : ''}
+              <a
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full flex-col justify-between rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 transition-colors hover:border-zinc-700/80 hover:bg-zinc-900/80"
+              >
+                <div>
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5 font-mono text-[11px] text-zinc-400">
+                      {article.platform || 'Article'}
                     </span>
+                    {article.published_at && (
+                      <span className="font-mono text-xs text-zinc-400">
+                        {new Date(article.published_at).toLocaleDateString()}
+                      </span>
+                    )}
                   </div>
 
-                  <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+                  <h3 className="mb-2 line-clamp-2 text-base font-semibold text-zinc-100 transition-colors group-hover:text-white">
                     {article.title}
                   </h3>
 
-                  <p className="mb-6 line-clamp-3 flex-grow text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                    {article.summary || article.description}
+                  <p className="line-clamp-3 text-sm leading-relaxed text-zinc-400">
+                    {article.summary || article.description || 'İçerik özeti bulunmuyor.'}
                   </p>
+                </div>
 
-                  <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                    {t('home.readArticle')}
-                    <ExternalLink
-                      size={14}
-                      className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-                    />
-                  </div>
-                </a>
-              </SpotlightCard>
+                <div className="mt-5 flex items-center gap-1.5 border-t border-zinc-800/80 pt-3 font-mono text-xs font-medium text-zinc-300 transition-colors group-hover:text-white">
+                  <span>{t('home.readArticle')}</span>
+                  <ExternalLink size={13} aria-hidden="true" />
+                </div>
+              </a>
             </motion.div>
           );
         })}

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Skill } from '../types';
 import axios from 'axios';
-import { Loader2, Wand2 } from 'lucide-react';
+import { Wand2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useTranslation } from 'react-i18next';
 import { useEnv } from '../hooks/useEnv';
-
 import { ListSkeleton } from '../components/ui/Skeletons';
 
 export default function Skills() {
@@ -32,7 +31,6 @@ export default function Skills() {
     return <ListSkeleton />;
   }
 
-  // Group skills by category
   const groupedSkills = skills.reduce(
     (acc, skill) => {
       if (!acc[skill.category]) {
@@ -47,37 +45,37 @@ export default function Skills() {
   return (
     <>
       <SEO title={`${t('skills.title')} | ResuMesh`} description={t('skills.subtitle')} />
-      <div className="mx-auto max-w-5xl py-8">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+      <div className="py-6">
+        <div className="mb-6">
+          <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
             {t('skills.title')}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">{t('skills.subtitle')}</p>
+          <p className="mt-1 font-mono text-xs text-zinc-400">{t('skills.subtitle')}</p>
         </div>
 
         {skills.length === 0 ? (
-          <div className="rounded-xl border border-gray-200 bg-white py-12 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-900">
-            <Wand2 className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p>{t('skills.emptyDesc')}</p>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 py-12 text-center text-zinc-400">
+            <Wand2 className="mx-auto mb-3 h-10 w-10 text-zinc-500" />
+            <p className="font-mono text-xs">{t('skills.emptyDesc')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {Object.entries(groupedSkills).map(([category, catSkills]) => (
               <div
                 key={category}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+                className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 transition-colors hover:border-zinc-700/80"
               >
-                <h3 className="mb-6 flex items-center gap-2 border-b border-gray-100 pb-3 text-xl font-bold text-gray-900 dark:border-gray-800 dark:text-white">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                    <Wand2 size={16} />
+                <h3 className="mb-4 flex items-center gap-2 border-b border-zinc-800/80 pb-3 font-mono text-base font-semibold text-zinc-100">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md border border-zinc-800 bg-zinc-950 text-zinc-400">
+                    <Wand2 size={14} />
                   </span>
                   {category}
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {catSkills.map((skill) => (
                     <div
                       key={skill.id}
-                      className="cursor-default rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:border-blue-400 hover:text-blue-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-blue-500 dark:hover:text-blue-400"
+                      className="cursor-default rounded-md border border-zinc-800 bg-zinc-950 px-3 py-1 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
                     >
                       {skill.name}
                     </div>

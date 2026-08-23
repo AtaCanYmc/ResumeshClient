@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased selection:bg-zinc-800 selection:text-zinc-100;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
 @layer utilities {
   .animate-marquee {
     animation-name: marquee;
@@ -15,11 +22,8 @@
     animation-iteration-count: infinite;
     will-change: transform;
   }
-  .animate-spin-slow {
-    animation: spin 8s linear infinite;
-  }
-  .bg-glass {
-    @apply border border-white/20 bg-white/70 backdrop-blur-md dark:border-white/10 dark:bg-black/40;
+  .border-clean {
+    @apply border border-zinc-800/80 transition-colors duration-150 hover:border-zinc-700/80;
   }
 }
 
@@ -38,15 +42,6 @@
   }
   100% {
     transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
   }
 }
 
