@@ -1,8 +1,9 @@
 import os
 
-from resumesh_client.config import settings
 from supabase import AsyncClientOptions
 from supabase._async.client import AsyncClient
+
+from resumesh_client.config import settings
 
 
 class SupabaseClientManager:

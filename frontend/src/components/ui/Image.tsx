@@ -11,16 +11,16 @@ export const LazyImage: React.FC<ImageProps> = ({ className, src, alt, fallback,
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div className={cn("relative overflow-hidden bg-gray-100 dark:bg-gray-800", className)}>
+    <div className={cn('relative overflow-hidden bg-gray-100 dark:bg-gray-800', className)}>
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-full h-full animate-pulse bg-gray-200 dark:bg-gray-700" />
+          <div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-700" />
         </div>
       )}
 
       {hasError ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
-          {fallback || <ImageIcon className="w-8 h-8 mb-2 opacity-50" />}
+          {fallback || <ImageIcon className="mb-2 h-8 w-8 opacity-50" />}
           <span className="text-xs font-medium">Görsel Yüklenemedi</span>
         </div>
       ) : (
@@ -28,8 +28,8 @@ export const LazyImage: React.FC<ImageProps> = ({ className, src, alt, fallback,
           src={src}
           alt={alt}
           className={cn(
-            "w-full h-full object-cover transition-opacity duration-500 ease-in-out",
-            isLoaded ? "opacity-100" : "opacity-0"
+            'h-full w-full object-cover transition-opacity duration-500 ease-in-out',
+            isLoaded ? 'opacity-100' : 'opacity-0'
           )}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}

@@ -18,7 +18,6 @@ const Articles = React.lazy(() => import('./pages/Articles'));
 const Certificates = React.lazy(() => import('./pages/Certificates'));
 const Packages = React.lazy(() => import('./pages/Packages'));
 
-
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +34,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <MainLayout />,
     errorElement: (
-      <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-black dark:text-white items-center justify-center p-8">
+      <div className="flex h-screen items-center justify-center bg-gray-50 p-8 text-gray-900 dark:bg-black dark:text-white">
         <ErrorBoundary />
       </div>
     ),

@@ -16,9 +16,7 @@ export const useAppSettings = () => {
 export const useContentConfig = (lang: string = 'tr') => {
   const shortLang = lang.split('-')[0].toLowerCase();
   const langData =
-    (contentData as any)[shortLang] ||
-    (contentData as any)[lang] ||
-    (contentData as any)['en'];
+    (contentData as any)[shortLang] || (contentData as any)[lang] || (contentData as any)['en'];
 
   const data: ContentConfig = {
     ...langData,

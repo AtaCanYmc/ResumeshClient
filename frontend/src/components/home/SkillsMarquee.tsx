@@ -7,20 +7,30 @@ import { getIcon } from '../../utils/iconResolver';
 
 const getCategoryColor = (category: string) => {
   const cat = category.toLowerCase();
-  if (cat.includes('front') || cat.includes('web') || cat.includes('design') || cat.includes('arayüz')) {
+  if (
+    cat.includes('front') ||
+    cat.includes('web') ||
+    cat.includes('design') ||
+    cat.includes('arayüz')
+  ) {
     return {
       bg: 'bg-blue-50 dark:bg-blue-950/30',
       text: 'text-blue-600 dark:text-blue-400',
       border: 'hover:border-blue-400 dark:hover:border-blue-700',
-      glow: 'shadow-blue-500/10'
+      glow: 'shadow-blue-500/10',
     };
   }
-  if (cat.includes('back') || cat.includes('api') || cat.includes('server') || cat.includes('sunucu')) {
+  if (
+    cat.includes('back') ||
+    cat.includes('api') ||
+    cat.includes('server') ||
+    cat.includes('sunucu')
+  ) {
     return {
       bg: 'bg-emerald-50 dark:bg-emerald-950/30',
       text: 'text-emerald-600 dark:text-emerald-400',
       border: 'hover:border-emerald-400 dark:hover:border-emerald-700',
-      glow: 'shadow-emerald-500/10'
+      glow: 'shadow-emerald-500/10',
     };
   }
   if (cat.includes('db') || cat.includes('data') || cat.includes('sql') || cat.includes('veri')) {
@@ -28,22 +38,27 @@ const getCategoryColor = (category: string) => {
       bg: 'bg-purple-50 dark:bg-purple-950/30',
       text: 'text-purple-600 dark:text-purple-400',
       border: 'hover:border-purple-400 dark:hover:border-purple-700',
-      glow: 'shadow-purple-500/10'
+      glow: 'shadow-purple-500/10',
     };
   }
-  if (cat.includes('cloud') || cat.includes('devops') || cat.includes('docker') || cat.includes('sistem')) {
+  if (
+    cat.includes('cloud') ||
+    cat.includes('devops') ||
+    cat.includes('docker') ||
+    cat.includes('sistem')
+  ) {
     return {
       bg: 'bg-orange-50 dark:bg-orange-950/30',
       text: 'text-orange-600 dark:text-orange-400',
       border: 'hover:border-orange-400 dark:hover:border-orange-700',
-      glow: 'shadow-orange-500/10'
+      glow: 'shadow-orange-500/10',
     };
   }
   return {
     bg: 'bg-indigo-50 dark:bg-indigo-950/30',
     text: 'text-indigo-600 dark:text-indigo-400',
     border: 'hover:border-indigo-400 dark:hover:border-indigo-700',
-    glow: 'shadow-indigo-500/10'
+    glow: 'shadow-indigo-500/10',
   };
 };
 
@@ -60,70 +75,67 @@ export default function SkillsMarquee() {
   const rawCategories = Array.from(new Set(skills.map((s) => s.category)));
   const categories = [
     { id: 'all', label: i18n.language === 'tr' ? 'Hepsi' : 'All' },
-    ...rawCategories.map(cat => ({
+    ...rawCategories.map((cat) => ({
       id: cat.toLowerCase(),
-      label: cat.charAt(0).toUpperCase() + cat.slice(1)
-    }))
+      label: cat.charAt(0).toUpperCase() + cat.slice(1),
+    })),
   ];
 
   // Filter skills based on selected category
-  const filteredSkills = selectedCategory === 'all'
-    ? skills
-    : skills.filter((s) => s.category.toLowerCase() === selectedCategory);
+  const filteredSkills =
+    selectedCategory === 'all'
+      ? skills
+      : skills.filter((s) => s.category.toLowerCase() === selectedCategory);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05
-      }
-    }
+        staggerChildren: 0.05,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 15 },
-    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } }
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } },
   };
 
   return (
-    <div className="py-16 relative">
+    <div className="relative py-16">
       {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-[40%] right-[5%] w-[30%] h-[30%] rounded-full bg-indigo-500/5 dark:bg-indigo-600/5 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-[40%] right-[5%] h-[30%] w-[30%] rounded-full bg-indigo-500/5 blur-[100px] dark:bg-indigo-600/5" />
       </div>
 
-      <div className="mb-10 text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-          <span className="bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">
+      <div className="mx-auto mb-10 max-w-2xl text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+          <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-500">
             {t('home.skills')}
           </span>
         </h2>
-        <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">
-          {t('home.skillsSubtitle')}
-        </p>
+        <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">{t('home.skillsSubtitle')}</p>
       </div>
 
       {/* Categories Selector Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+      <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
         {categories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           return (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`
-                px-5 py-2.5 rounded-xl font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative cursor-pointer
-                ${isActive
+              className={`relative cursor-pointer rounded-xl px-5 py-2.5 text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                isActive
                   ? 'text-white'
-                  : 'text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800'
-                }
-              `}
+                  : 'border border-gray-200 bg-white/50 text-gray-600 hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-900/50 dark:text-gray-400 dark:hover:bg-gray-800'
+              } `}
             >
               {isActive && (
                 <motion.div
                   layoutId="activeCategory"
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-xl"
+                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500"
                   transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 />
               )}
@@ -139,7 +151,7 @@ export default function SkillsMarquee() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
       >
         <AnimatePresence mode="popLayout">
           {filteredSkills.map((skill) => {
@@ -154,18 +166,18 @@ export default function SkillsMarquee() {
                 initial="hidden"
                 animate="show"
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
-                className={`
-                  flex items-center gap-4 p-4 rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-200 dark:border-gray-800/80 transition-all hover:-translate-y-1 hover:shadow-lg ${colors.glow} ${colors.border} group cursor-default
-                `}
+                className={`flex items-center gap-4 rounded-2xl border border-gray-200 bg-white/60 p-4 backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-800/80 dark:bg-gray-900/60 ${colors.glow} ${colors.border} group cursor-default`}
               >
-                <div className={`p-3 rounded-xl ${colors.bg} ${colors.text} transition-colors group-hover:scale-110 duration-300`}>
+                <div
+                  className={`rounded-xl p-3 ${colors.bg} ${colors.text} transition-colors duration-300 group-hover:scale-110`}
+                >
                   <Icon size={24} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <div className="min-w-0 flex-1">
+                  <h4 className="truncate text-base font-bold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
                     {skill.name}
                   </h4>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                  <p className="mt-0.5 truncate text-xs font-medium text-gray-500 dark:text-gray-400">
                     {skill.category.charAt(0).toUpperCase() + skill.category.slice(1)}
                   </p>
                 </div>

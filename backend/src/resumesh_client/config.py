@@ -5,6 +5,7 @@ Simplified configuration reading exclusively from environment variables or .env 
 
 import json
 from typing import Any, List, Optional, Union
+
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

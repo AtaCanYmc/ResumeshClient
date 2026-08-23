@@ -6,13 +6,7 @@ import { Briefcase } from 'lucide-react';
 
 describe('EmptyState Component', () => {
   it('renders title and message correctly', () => {
-    render(
-      <EmptyState
-        icon={Briefcase}
-        title="Test Title"
-        message="Test Message"
-      />
-    );
+    render(<EmptyState icon={Briefcase} title="Test Title" message="Test Message" />);
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();
     expect(screen.getByText('Test Message')).toBeInTheDocument();

@@ -1,5 +1,6 @@
-from resumesh_client.db import Base
 from sqlalchemy import Column, String, Text
+
+from resumesh_client.db import Base
 
 
 class AppSetting(Base):

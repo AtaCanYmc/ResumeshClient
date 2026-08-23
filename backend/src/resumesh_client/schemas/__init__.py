@@ -8,7 +8,11 @@ from resumesh_client.schemas.app_settings import (
     AppSettingsResponse,
     AppSettingsUpdate,
 )
-from resumesh_client.schemas.article import ArticleCreate, ArticleResponse, ArticleUpdate
+from resumesh_client.schemas.article import (
+    ArticleCreate,
+    ArticleResponse,
+    ArticleUpdate,
+)
 from resumesh_client.schemas.certificate import (
     CertificateCreate,
     CertificateResponse,
@@ -25,11 +29,23 @@ from resumesh_client.schemas.experience import (
     ExperienceUpdate,
 )
 from resumesh_client.schemas.generated_cv import GeneratedCVCreate, GeneratedCVResponse
-from resumesh_client.schemas.package import PackageCreate, PackageResponse, PackageUpdate
+from resumesh_client.schemas.package import (
+    PackageCreate,
+    PackageResponse,
+    PackageUpdate,
+)
 from resumesh_client.schemas.post import PostCreate, PostResponse, PostUpdate
-from resumesh_client.schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate
+from resumesh_client.schemas.project import (
+    ProjectCreate,
+    ProjectResponse,
+    ProjectUpdate,
+)
 from resumesh_client.schemas.search import GlobalSearchResponse, SearchResultItem
-from resumesh_client.schemas.section import SectionCreate, SectionResponse, SectionUpdate
+from resumesh_client.schemas.section import (
+    SectionCreate,
+    SectionResponse,
+    SectionUpdate,
+)
 from resumesh_client.schemas.skill import SkillCreate, SkillResponse, SkillUpdate
 from resumesh_client.schemas.social_link import (
     SocialLinkCreate,

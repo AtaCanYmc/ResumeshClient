@@ -1,4 +1,3 @@
-import os
 import pytest
 import resumesh_client.models  # noqa: F401
 from fastapi.testclient import TestClient

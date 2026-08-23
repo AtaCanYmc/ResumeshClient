@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Response
+
 from resumesh_client.providers.supabase.client import SupabaseClientManager
 
 router = APIRouter(prefix="/api/v1/cv", tags=["CV Storage"])

@@ -6,7 +6,9 @@ Provides robust fallback defaults if database query fails or tables are empty.
 import json
 import logging
 from typing import Any, Dict, List
+
 from sqlalchemy.orm import Session
+
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.models.section import Section
 from resumesh_client.models.social_link import SocialLink

@@ -14,30 +14,30 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  name = "Ata Can Yaymacı",
-  type = "website",
-  url = "https://resumesh.dev",
-  image = "https://resumesh.dev/images/profile_pic.jpeg",
-  twitterHandle = "@x",
+  name = 'Ata Can Yaymacı',
+  type = 'website',
+  url = 'https://resumesh.dev',
+  image = 'https://resumesh.dev/images/profile_pic.jpeg',
+  twitterHandle = '@x',
 }) => {
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": name,
-    "url": url,
-    "image": image,
-    "sameAs": [
-      "https://github.com/atacan",
-      "https://linkedin.com/in/atacanyucel",
-      "https://twitter.com/atacanyucel"
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: name,
+    url: url,
+    image: image,
+    sameAs: [
+      'https://github.com/atacan',
+      'https://linkedin.com/in/atacanyucel',
+      'https://twitter.com/atacanyucel',
     ],
-    "jobTitle": "Full Stack Software Engineer"
+    jobTitle: 'Full Stack Software Engineer',
   };
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{title}</title>
-      <meta name='description' content={description} />
+      <meta name="description" content={description} />
       <link rel="canonical" href={url} />
 
       {/* Open Graph (Facebook / LinkedIn) */}
@@ -57,9 +57,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:image" content={image} />
 
       {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
+      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     </Helmet>
   );
 };

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -19,30 +19,49 @@
     animation: spin 8s linear infinite;
   }
   .bg-glass {
-    @apply bg-white/70 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10;
+    @apply border border-white/20 bg-white/70 backdrop-blur-md dark:border-white/10 dark:bg-black/40;
   }
 }
 
 @keyframes marquee {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-100%, 0, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
 }
 
 @keyframes marquee-reverse {
-  0% { transform: translate3d(-100%, 0, 0); }
-  100% { transform: translate3d(0, 0, 0); }
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media print {
-  header, footer, aside, button, nav, .no-print {
+  header,
+  footer,
+  aside,
+  button,
+  nav,
+  .no-print {
     display: none !important;
   }
-  body, html, main {
+  body,
+  html,
+  main {
     background: white !important;
     color: black !important;
     margin: 0 !important;

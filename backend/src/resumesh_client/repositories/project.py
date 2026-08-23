@@ -1,8 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
+
 from sqlalchemy.orm import Session
+
 from resumesh_client.models.project import Project
-from resumesh_client.schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate
+from resumesh_client.schemas.project import (
+    ProjectCreate,
+    ProjectResponse,
+    ProjectUpdate,
+)
 
 
 class IProjectRepository(ABC):
@@ -11,9 +17,7 @@ class IProjectRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_projects(
-        self, skip: int = 0, limit: int = 100
-    ) -> List[ProjectResponse]:
+    async def get_projects(self, skip: int = 0, limit: int = 100) -> List[ProjectResponse]:
         pass
 
     @abstractmethod
@@ -25,9 +29,7 @@ class IProjectRepository(ABC):
         pass
 
     @abstractmethod
-    async def update_project(
-        self, project_id: str, project: ProjectUpdate
-    ) -> Optional[ProjectResponse]:
+    async def update_project(self, project_id: str, project: ProjectUpdate) -> Optional[ProjectResponse]:
         pass
 
     @abstractmethod
@@ -46,9 +48,7 @@ class ProjectRepository(IProjectRepository):
         self.db.refresh(item)
         return ProjectResponse.model_validate(item)
 
-    async def get_projects(
-        self, skip: int = 0, limit: int = 100
-    ) -> List[ProjectResponse]:
+    async def get_projects(self, skip: int = 0, limit: int = 100) -> List[ProjectResponse]:
         items = self.db.query(Project).offset(skip).limit(limit).all()
         return [ProjectResponse.model_validate(i) for i in items]
 
@@ -71,9 +71,7 @@ class ProjectRepository(IProjectRepository):
         self.db.refresh(item)
         return ProjectResponse.model_validate(item)
 
-    async def update_project(
-        self, project_id: str, project: ProjectUpdate
-    ) -> Optional[ProjectResponse]:
+    async def update_project(self, project_id: str, project: ProjectUpdate) -> Optional[ProjectResponse]:
         item = self.db.query(Project).filter(Project.id == project_id).first()
         if not item:
             return None

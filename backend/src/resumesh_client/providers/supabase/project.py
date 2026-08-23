@@ -1,8 +1,12 @@
 from typing import List, Optional
 
-from resumesh_client.schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate
 from resumesh_client.providers.supabase.client import SupabaseClientManager
 from resumesh_client.repositories.project import IProjectRepository
+from resumesh_client.schemas.project import (
+    ProjectCreate,
+    ProjectResponse,
+    ProjectUpdate,
+)
 
 
 class SupabaseProjectRepository(IProjectRepository):
@@ -12,9 +16,7 @@ class SupabaseProjectRepository(IProjectRepository):
     async def create_project(self, project: ProjectCreate) -> ProjectResponse:
         project_data = project.model_dump(mode="json")
         if "name" not in project_data or not project_data["name"]:
-            project_data["name"] = getattr(project, "title", None) or getattr(
-                project, "name", ""
-            )
+            project_data["name"] = getattr(project, "title", None) or getattr(project, "name", "")
         valid_keys = {
             "name",
             "description",
@@ -36,14 +38,10 @@ class SupabaseProjectRepository(IProjectRepository):
             item["name"] = item.get("title", "")
         return ProjectResponse(**item)
 
-    async def get_projects(
-        self, skip: int = 0, limit: int = 100
-    ) -> List[ProjectResponse]:
+    async def get_projects(self, skip: int = 0, limit: int = 100) -> List[ProjectResponse]:
         start = skip
         end = skip + limit - 1
-        response = (
-            await self.client.table("projects").select("*").range(start, end).execute()
-        )
+        response = await self.client.table("projects").select("*").range(start, end).execute()
         results = []
         for item in response.data:
             if "name" not in item or not item["name"]:
@@ -52,12 +50,7 @@ class SupabaseProjectRepository(IProjectRepository):
         return results
 
     async def get_project_by_id(self, project_id: str) -> Optional[ProjectResponse]:
-        response = (
-            await self.client.table("projects")
-            .select("*")
-            .eq("id", project_id)
-            .execute()
-        )
+        response = await self.client.table("projects").select("*").eq("id", project_id).execute()
         if not response.data:
             return None
         item = response.data[0]
@@ -68,18 +61,14 @@ class SupabaseProjectRepository(IProjectRepository):
     async def upsert_project(self, project: ProjectCreate) -> ProjectResponse:
         project_data = project.model_dump(mode="json")
         if "name" not in project_data or not project_data["name"]:
-            project_data["name"] = getattr(project, "title", None) or getattr(
-                project, "name", ""
-            )
+            project_data["name"] = getattr(project, "title", None) or getattr(project, "name", "")
         if "stars" not in project_data or not project_data["stars"]:
             project_data["stars"] = getattr(project, "stargazers_count", 0)
         if "watchers" not in project_data or not project_data["watchers"]:
             project_data["watchers"] = getattr(project, "watchers_count", 0)
         if "forks" not in project_data or not project_data["forks"]:
             project_data["forks"] = getattr(project, "forks_count", 0)
-        if ("url" not in project_data or not project_data["url"]) and getattr(
-            project, "url", None
-        ):
+        if ("url" not in project_data or not project_data["url"]) and getattr(project, "url", None):
             project_data["url"] = str(getattr(project, "url"))
 
         valid_keys = {
@@ -99,45 +88,25 @@ class SupabaseProjectRepository(IProjectRepository):
         if url:
             query = self.client.table("projects").select("*").eq("url", url)
         else:
-            query = (
-                self.client.table("projects")
-                .select("*")
-                .eq("name", project_data.get("name", ""))
-            )
+            query = self.client.table("projects").select("*").eq("name", project_data.get("name", ""))
 
         existing = await query.execute()
         if existing.data:
             proj_id = existing.data[0]["id"]
-            response = (
-                await self.client.table("projects")
-                .update(project_data)
-                .eq("id", proj_id)
-                .execute()
-            )
+            response = await self.client.table("projects").update(project_data).eq("id", proj_id).execute()
         else:
-            response = (
-                await self.client.table("projects").insert(project_data).execute()
-            )
+            response = await self.client.table("projects").insert(project_data).execute()
         if not response.data:
             raise Exception("Failed to upsert project in Supabase.")
         return ProjectResponse(**response.data[0])
 
-    async def update_project(
-        self, project_id: str, project: ProjectUpdate
-    ) -> Optional[ProjectResponse]:
+    async def update_project(self, project_id: str, project: ProjectUpdate) -> Optional[ProjectResponse]:
         update_data = project.model_dump(mode="json", exclude_unset=True)
-        response = (
-            await self.client.table("projects")
-            .update(update_data)
-            .eq("id", project_id)
-            .execute()
-        )
+        response = await self.client.table("projects").update(update_data).eq("id", project_id).execute()
         if not response.data:
             return None
         return ProjectResponse(**response.data[0])
 
     async def delete_project(self, project_id: str) -> bool:
-        response = (
-            await self.client.table("projects").delete().eq("id", project_id).execute()
-        )
+        response = await self.client.table("projects").delete().eq("id", project_id).execute()
         return len(response.data) > 0

@@ -1,19 +1,42 @@
+# =============================================================================
+# ResuMesh Client - Git Pre-Commit Hooks Configuration
+# =============================================================================
+
+default_language_version:
+  python: python3
+
 repos:
+  # 1. Standard Git & Security Hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
+        exclude: '(\.md$|\.temp/)'
       - id: end-of-file-fixer
+        exclude: '\.temp/'
       - id: check-yaml
+      - id: check-json
+        exclude: 'tsconfig.*\.json$'
       - id: check-added-large-files
+        args: ['--maxkb=10000']
+      - id: detect-private-key
+      - id: check-merge-conflict
 
-  - repo: https://github.com/psf/black
-    rev: 24.2.0
-    hooks:
-      - id: black
-
+  # 2. Python Code Formatting & Linting (Ruff & Ruff Format)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.0
+    rev: v0.3.2
     hooks:
       - id: ruff
         args: [--fix]
+        files: '^backend/'
+      - id: ruff-format
+        files: '^backend/'
+
+  # 3. Frontend JS/TS Formatting (Prettier inside frontend directory)
+  - repo: local
+    hooks:
+      - id: prettier-frontend
+        name: prettier-frontend
+        entry: bash -c 'cd frontend && npx prettier --write "src/**/*.{ts,tsx,css,json}"'
+        language: system
+        files: '^frontend/src/'

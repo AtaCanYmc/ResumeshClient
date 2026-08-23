@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Package } from '../types';
-import { Package as PackageIcon, Download, ExternalLink, BookOpen, ChevronDown, FolderSearch, AlertOctagon } from 'lucide-react';
+import {
+  Package as PackageIcon,
+  Download,
+  ExternalLink,
+  BookOpen,
+  ChevronDown,
+  FolderSearch,
+  AlertOctagon,
+} from 'lucide-react';
 import Modal from '../components/Modal';
 import { ContentCard } from '../components/ui/ContentCard';
 import { ContentCardSkeleton } from '../components/ui/ContentCardSkeleton';
@@ -27,18 +35,16 @@ export default function Packages() {
   if (isError) {
     return (
       <>
-        <SEO
-          title={`Hata | ResuMesh`}
-          description="Paketler yüklenirken bir hata oluştu."
-        />
-        <div className="py-8 max-w-4xl mx-auto">
-          <div className="flex flex-col items-center justify-center min-h-[40vh] p-8 text-center bg-red-50 dark:bg-red-900/10 rounded-2xl border border-red-200 dark:border-red-900/30">
-            <AlertOctagon className="w-16 h-16 text-red-500 mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 dark:text-red-400 mb-2">
+        <SEO title={`Hata | ResuMesh`} description="Paketler yüklenirken bir hata oluştu." />
+        <div className="mx-auto max-w-4xl py-8">
+          <div className="flex min-h-[40vh] flex-col items-center justify-center rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900/30 dark:bg-red-900/10">
+            <AlertOctagon className="mb-4 h-16 w-16 text-red-500" />
+            <h2 className="mb-2 text-xl font-bold text-gray-900 dark:text-red-400">
               Paketler Yüklenemedi
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-md">
-              Paketler ve kütüphaneler yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.
+            <p className="max-w-md text-gray-600 dark:text-gray-400">
+              Paketler ve kütüphaneler yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar
+              deneyin.
             </p>
           </div>
         </div>
@@ -48,10 +54,10 @@ export default function Packages() {
 
   // Extract unique platforms
   const platforms = Array.from(
-    new Set((packages as Package[]).map(p => p.platform).filter(Boolean))
+    new Set((packages as Package[]).map((p) => p.platform).filter(Boolean))
   );
 
-  const filteredPackages = (packages as Package[]).filter(pkg => {
+  const filteredPackages = (packages as Package[]).filter((pkg) => {
     if (platformFilter !== 'All' && pkg.platform !== platformFilter) return false;
     return true;
   });
@@ -71,29 +77,24 @@ export default function Packages() {
 
   return (
     <>
-      <SEO
-        title={`${t('packages.title')} | ResuMesh`}
-        description={t('packages.subtitle')}
-      />
+      <SEO title={`${t('packages.title')} | ResuMesh`} description={t('packages.subtitle')} />
       <div className="py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-2">
+            <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               {t('packages.title')}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              {t('packages.subtitle')}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400">{t('packages.subtitle')}</p>
           </div>
         </div>
 
         {/* Filters & Sorting */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8 justify-between items-start md:items-center">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           {/* Platform Filters */}
-          <div className="flex gap-2 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide w-full md:w-auto -mx-4 px-4 md:mx-0 md:px-0">
+          <div className="scrollbar-hide -mx-4 flex w-full gap-2 overflow-x-auto px-4 pb-2 whitespace-nowrap md:mx-0 md:w-auto md:px-0">
             <button
               onClick={() => setPlatformFilter('All')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 platformFilter === 'All'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -101,11 +102,11 @@ export default function Packages() {
             >
               All
             </button>
-            {platforms.map(platform => (
+            {platforms.map((platform) => (
               <button
                 key={platform}
                 onClick={() => setPlatformFilter(platform)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${
+                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                   platformFilter === platform
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -117,11 +118,11 @@ export default function Packages() {
           </div>
 
           {/* Sorting */}
-          <div className="relative shrink-0 w-full md:w-auto">
+          <div className="relative w-full shrink-0 md:w-auto">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full appearance-none bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 text-sm rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm"
+              className="w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-2.5 pr-10 pl-4 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
             >
               <option value="downloads">Aylık İndirmeye Göre</option>
               <option value="name">Alfabetik (A-Z)</option>
@@ -134,11 +135,9 @@ export default function Packages() {
         </div>
 
         {/* Grid using ContentCard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {isLoading ? (
-            Array.from({ length: 6 }).map((_, idx) => (
-              <ContentCardSkeleton key={idx} />
-            ))
+            Array.from({ length: 6 }).map((_, idx) => <ContentCardSkeleton key={idx} />)
           ) : packages.length === 0 ? (
             <EmptyState
               icon={PackageIcon}
@@ -147,7 +146,12 @@ export default function Packages() {
             />
           ) : sortedPackages.length > 0 ? (
             sortedPackages.map((pkg) => {
-              const tagsArray = pkg.tags ? pkg.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+              const tagsArray = pkg.tags
+                ? pkg.tags
+                    .split(',')
+                    .map((t) => t.trim())
+                    .filter(Boolean)
+                : [];
               if (pkg.platform && !tagsArray.includes(pkg.platform)) {
                 tagsArray.unshift(pkg.platform);
               }
@@ -176,19 +180,21 @@ export default function Packages() {
               );
             })
           ) : (
-            <div className="col-span-full py-16 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-full flex items-center justify-center mb-4">
+            <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
                 <FolderSearch size={32} aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Paket Bulunamadı</h3>
-              <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
+              <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                Paket Bulunamadı
+              </h3>
+              <p className="mx-auto mb-6 max-w-md text-gray-500 dark:text-gray-400">
                 Seçtiğiniz filtreye uygun bir paket veya kütüphane bulunamadı.
               </p>
               <button
                 onClick={() => {
                   setPlatformFilter('All');
                 }}
-                className="px-6 py-2.5 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 font-medium rounded-lg hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="rounded-lg bg-blue-50 px-6 py-2.5 font-medium text-blue-600 transition-colors hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20"
               >
                 Filtreleri Temizle
               </button>
@@ -204,19 +210,19 @@ export default function Packages() {
         >
           {selectedPackage && (
             <div className="space-y-6">
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed text-base">
+              <p className="text-base leading-relaxed whitespace-pre-wrap text-gray-700 dark:text-gray-300">
                 {selectedPackage.description || t('common.noDescription')}
               </p>
 
               {/* Tags & Metadata */}
-              <div className="flex gap-2 flex-wrap items-center">
+              <div className="flex flex-wrap items-center gap-2">
                 {selectedPackage.platform && (
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold rounded-md text-sm border border-blue-200 dark:border-blue-800">
+                  <span className="rounded-md border border-blue-200 bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800 dark:border-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
                     {selectedPackage.platform}
                   </span>
                 )}
                 {selectedPackage.version && (
-                  <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-md text-sm border border-gray-200 dark:border-gray-700">
+                  <span className="rounded-md border border-gray-200 bg-gray-100 px-3 py-1 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                     v{selectedPackage.version}
                   </span>
                 )}
@@ -224,7 +230,7 @@ export default function Packages() {
                   selectedPackage.tags.split(',').map((tag) => (
                     <span
                       key={tag.trim()}
-                      className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm border border-gray-200 dark:border-gray-700"
+                      className="rounded-md border border-gray-200 bg-gray-100 px-3 py-1 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                     >
                       {tag.trim()}
                     </span>
@@ -232,24 +238,25 @@ export default function Packages() {
               </div>
 
               {/* Download & Links */}
-              <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 flex-wrap">
-                {selectedPackage.last_month_downloads !== undefined && selectedPackage.last_month_downloads > 0 && (
-                  <div className="flex items-center gap-2">
-                    <Download size={18} aria-hidden="true" />
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      {selectedPackage.last_month_downloads.toLocaleString()}
-                    </span>
-                    <span className="text-sm">aylık indirme</span>
-                  </div>
-                )}
+              <div className="flex flex-wrap items-center gap-4 border-t border-gray-200 pt-4 text-gray-600 dark:border-gray-800 dark:text-gray-400">
+                {selectedPackage.last_month_downloads !== undefined &&
+                  selectedPackage.last_month_downloads > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Download size={18} aria-hidden="true" />
+                      <span className="font-semibold text-gray-900 dark:text-white">
+                        {selectedPackage.last_month_downloads.toLocaleString()}
+                      </span>
+                      <span className="text-sm">aylık indirme</span>
+                    </div>
+                  )}
 
-                <div className="ml-auto flex gap-3 items-center flex-wrap">
+                <div className="ml-auto flex flex-wrap items-center gap-3">
                   {selectedPackage.docs_url && (
                     <a
                       href={selectedPackage.docs_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm font-medium"
+                      className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                     >
                       <BookOpen size={16} aria-hidden="true" />
                       <span>{t('packages.docs')}</span>
@@ -261,7 +268,7 @@ export default function Packages() {
                       href={selectedPackage.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm font-medium"
+                      className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     >
                       <ExternalLink size={16} aria-hidden="true" />
                       <span>Platform Sayfası</span>

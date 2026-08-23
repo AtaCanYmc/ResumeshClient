@@ -1,15 +1,14 @@
 import uuid
 
-from resumesh_client.db import Base
 from sqlalchemy import Boolean, Column, Date, DateTime, String, Text, func
+
+from resumesh_client.db import Base
 
 
 class Education(Base):
     __tablename__ = "educations"
 
-    id = Column(
-        String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4())
-    )
+    id = Column(String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     school = Column(String(255), nullable=False)
     degree = Column(String(255), nullable=False)
     field_of_study = Column(String(255), nullable=False)
@@ -19,9 +18,7 @@ class Education(Base):
     grade = Column(String(50), nullable=True)
     description = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
-        DateTime(timezone=True), onupdate=func.now(), server_default=func.now()
-    )
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
 
 
 EducationModel = Education

@@ -42,56 +42,58 @@ export default function Experiences() {
 
   return (
     <>
-    <SEO
-      title={`${t('experiences.title')} | ResuMesh`}
-      description={t('experiences.subtitle')}
-    />
-    <div className="py-8 max-w-4xl mx-auto">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-4">{t('experiences.title')}</h1>
-        <p className="text-gray-400">{t('experiences.subtitle')}</p>
-      </div>
+      <SEO title={`${t('experiences.title')} | ResuMesh`} description={t('experiences.subtitle')} />
+      <div className="mx-auto max-w-4xl py-8">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-white">
+            {t('experiences.title')}
+          </h1>
+          <p className="text-gray-400">{t('experiences.subtitle')}</p>
+        </div>
 
-      <div className="relative border-l border-gray-800 ml-3 md:ml-6 space-y-12">
-        {experiences.length === 0 && (
-          <div className="text-gray-500 pl-8">{t('experiences.emptyDesc')}</div>
-        )}
-        {experiences.map((exp) => (
-          <div key={exp.id} className="relative pl-8 md:pl-12 group">
-            {/* Timeline Dot */}
-            <div className="absolute -left-3.5 top-1.5 w-7 h-7 bg-gray-900 border-2 border-blue-500 rounded-full flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-              <Briefcase size={12} className="text-blue-500 group-hover:text-white" />
-            </div>
-
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-100">{exp.title}</h3>
-                  <h4 className="text-md text-blue-400 font-medium">{exp.company_name}</h4>
-                </div>
-                <div className="text-sm font-mono text-gray-500 mt-2 md:mt-0 bg-black px-3 py-1 rounded-full border border-gray-800 inline-block">
-                  {exp.start_date} - {exp.end_date || 'Present'}
-                </div>
+        <div className="relative ml-3 space-y-12 border-l border-gray-800 md:ml-6">
+          {experiences.length === 0 && (
+            <div className="pl-8 text-gray-500">{t('experiences.emptyDesc')}</div>
+          )}
+          {experiences.map((exp) => (
+            <div key={exp.id} className="group relative pl-8 md:pl-12">
+              {/* Timeline Dot */}
+              <div className="absolute top-1.5 -left-3.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-blue-500 bg-gray-900 transition-colors group-hover:bg-blue-500">
+                <Briefcase size={12} className="text-blue-500 group-hover:text-white" />
               </div>
 
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 whitespace-pre-wrap">
-                {exp.description}
-              </p>
-
-              {exp.skills && exp.skills.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {exp.skills.map(skill => (
-                    <span key={skill} className="px-3 py-1 text-xs font-medium bg-gray-800 text-gray-300 rounded-md border border-gray-700">
-                      {skill}
-                    </span>
-                  ))}
+              <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 transition-colors hover:border-gray-700">
+                <div className="mb-4 flex flex-col md:flex-row md:items-start md:justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-100">{exp.title}</h3>
+                    <h4 className="text-md font-medium text-blue-400">{exp.company_name}</h4>
+                  </div>
+                  <div className="mt-2 inline-block rounded-full border border-gray-800 bg-black px-3 py-1 font-mono text-sm text-gray-500 md:mt-0">
+                    {exp.start_date} - {exp.end_date || 'Present'}
+                  </div>
                 </div>
-              )}
+
+                <p className="mb-6 text-sm leading-relaxed whitespace-pre-wrap text-gray-400">
+                  {exp.description}
+                </p>
+
+                {exp.skills && exp.skills.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {exp.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-md border border-gray-700 bg-gray-800 px-3 py-1 text-xs font-medium text-gray-300"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 }

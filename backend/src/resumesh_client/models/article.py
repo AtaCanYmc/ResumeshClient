@@ -1,15 +1,14 @@
 import uuid
 
-from resumesh_client.db import Base
 from sqlalchemy import JSON, Column, DateTime, Integer, String, Text, func
+
+from resumesh_client.db import Base
 
 
 class Article(Base):
     __tablename__ = "articles"
 
-    id = Column(
-        String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4())
-    )
+    id = Column(String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     title = Column(String(255), nullable=False, index=True)
     summary = Column(Text, nullable=True)
     url = Column(String(512), nullable=False, unique=True)
@@ -18,9 +17,7 @@ class Article(Base):
     raw_platform_data = Column(JSON, nullable=True)
     published_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
-        DateTime(timezone=True), onupdate=func.now(), server_default=func.now()
-    )
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
 
 
 ArticleModel = Article

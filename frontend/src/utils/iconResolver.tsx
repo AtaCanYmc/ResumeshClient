@@ -1,5 +1,16 @@
 import React from 'react';
-import { Code, BookOpen, Star, User, Briefcase, FolderGit, Award, GithubIcon as LucideGithub, LinkedinIcon as LucideLinkedin, TwitterIcon as LucideTwitter } from 'lucide-react';
+import {
+  Code,
+  BookOpen,
+  Star,
+  User,
+  Briefcase,
+  FolderGit,
+  Award,
+  GithubIcon as LucideGithub,
+  LinkedinIcon as LucideLinkedin,
+  TwitterIcon as LucideTwitter,
+} from 'lucide-react';
 
 // Define custom SVGs for social icons because Lucide removed brand icons
 const GithubIcon = (props: any) => (

@@ -9,7 +9,14 @@ interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   as?: 'button' | 'a';
 }
 
-export default function MagneticButton({ children, className = '', onClick, href, as = 'button', ...props }: MagneticButtonProps) {
+export default function MagneticButton({
+  children,
+  className = '',
+  onClick,
+  href,
+  as = 'button',
+  ...props
+}: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -35,15 +42,24 @@ export default function MagneticButton({ children, className = '', onClick, href
       onMouseMove={handleMouse}
       onMouseLeave={reset}
       animate={{ x: position.x, y: position.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
       className={`relative inline-block ${className}`}
     >
       {as === 'button' ? (
-        <button onClick={onClick} className="w-full h-full flex items-center justify-center focus:outline-none" {...props}>
+        <button
+          onClick={onClick}
+          className="flex h-full w-full items-center justify-center focus:outline-none"
+          {...props}
+        >
           {children}
         </button>
       ) : (
-        <a href={href} className="w-full h-full flex items-center justify-center focus:outline-none" target={href?.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer">
+        <a
+          href={href}
+          className="flex h-full w-full items-center justify-center focus:outline-none"
+          target={href?.startsWith('http') ? '_blank' : '_self'}
+          rel="noopener noreferrer"
+        >
           {children}
         </a>
       )}

@@ -42,59 +42,66 @@ export default function Certificates() {
 
   return (
     <>
-    <SEO
-      title={`${t('certificates.title')} | ResuMesh`}
-      description={t('certificates.subtitle')}
-    />
-    <div className="py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">{t('certificates.title')}</h1>
-        <p className="text-gray-400">{t('certificates.subtitle')}</p>
-      </div>
+      <SEO
+        title={`${t('certificates.title')} | ResuMesh`}
+        description={t('certificates.subtitle')}
+      />
+      <div className="py-8">
+        <div className="mb-8">
+          <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-white">
+            {t('certificates.title')}
+          </h1>
+          <p className="text-gray-400">{t('certificates.subtitle')}</p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {certificates.map((cert) => (
-          <div key={cert.id} className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col hover:border-gray-700 transition-colors">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="w-12 h-12 rounded-lg bg-black border border-gray-800 flex items-center justify-center shrink-0">
-                <Award className="text-blue-500" size={24} />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {certificates.map((cert) => (
+            <div
+              key={cert.id}
+              className="flex flex-col rounded-xl border border-gray-800 bg-gray-900 p-6 transition-colors hover:border-gray-700"
+            >
+              <div className="mb-4 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-gray-800 bg-black">
+                  <Award className="text-blue-500" size={24} />
+                </div>
+                <div>
+                  <h3 className="text-lg leading-snug font-bold text-gray-100">{cert.name}</h3>
+                  <p className="mt-1 text-sm font-medium text-gray-400">
+                    {cert.issuing_organization}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-100 leading-snug">{cert.name}</h3>
-                <p className="text-sm text-gray-400 mt-1 font-medium">{cert.issuing_organization}</p>
-              </div>
-            </div>
 
-            <div className="mt-auto pt-6 border-t border-gray-800 flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                {cert.issue_date && (
-                  <>
-                    <Calendar size={14} />
-                    <span>Issued {new Date(cert.issue_date).toLocaleDateString()}</span>
-                  </>
+              <div className="mt-auto flex items-center justify-between border-t border-gray-800 pt-6">
+                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                  {cert.issue_date && (
+                    <>
+                      <Calendar size={14} />
+                      <span>Issued {new Date(cert.issue_date).toLocaleDateString()}</span>
+                    </>
+                  )}
+                </div>
+                {cert.credential_url && (
+                  <a
+                    href={cert.credential_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-1 text-xs font-semibold text-blue-400 transition-colors hover:text-blue-300"
+                  >
+                    <span>View Credential</span>
+                    <ExternalLink size={14} />
+                  </a>
                 )}
               </div>
-              {cert.credential_url && (
-                <a
-                  href={cert.credential_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  <span>View Credential</span>
-                  <ExternalLink size={14} />
-                </a>
-              )}
             </div>
-          </div>
-        ))}
-        {certificates.length === 0 && (
-          <div className="col-span-full py-12 text-center text-gray-500">
-             Henüz sertifika eklenmemiş.
-          </div>
-        )}
+          ))}
+          {certificates.length === 0 && (
+            <div className="col-span-full py-12 text-center text-gray-500">
+              Henüz sertifika eklenmemiş.
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 }

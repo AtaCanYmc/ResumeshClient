@@ -11,7 +11,7 @@ interface SpotlightCardProps {
 export default function SpotlightCard({
   children,
   className = '',
-  spotlightColor = 'rgba(59, 130, 246, 0.15)' // Default blue-500 with opacity
+  spotlightColor = 'rgba(59, 130, 246, 0.15)', // Default blue-500 with opacity
 }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -69,15 +69,13 @@ export default function SpotlightCard({
     >
       <motion.div
         animate={{ opacity: opacity }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300"
         style={{
           background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${isDark ? spotlightColor : spotlightColor.replace(/0\.\d+\)/, '0.04)')}, transparent 40%)`,
         }}
       />
-      <div className="relative h-full w-full">
-        {children}
-      </div>
+      <div className="relative h-full w-full">{children}</div>
     </div>
   );
 }

@@ -3,9 +3,9 @@ import { Loader2 } from 'lucide-react';
 
 const PageLoader: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-      <Loader2 className="w-8 h-8 text-blue-500 animate-spin" aria-hidden="true" />
-      <p className="text-gray-500 dark:text-gray-400 font-medium">Sayfa yükleniyor...</p>
+    <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-4">
+      <Loader2 className="h-8 w-8 animate-spin text-blue-500" aria-hidden="true" />
+      <p className="font-medium text-gray-500 dark:text-gray-400">Sayfa yükleniyor...</p>
     </div>
   );
 };

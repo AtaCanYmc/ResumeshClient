@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
-import { User, Briefcase, FolderGit, BookOpen, Award, Menu, X, Moon, Sun, GraduationCap, Wand2, Package as PackageIcon } from 'lucide-react';
+import {
+  User,
+  Briefcase,
+  FolderGit,
+  BookOpen,
+  Award,
+  Menu,
+  X,
+  Moon,
+  Sun,
+  GraduationCap,
+  Wand2,
+  Package as PackageIcon,
+} from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import SearchBar from './SearchBar';
 import { useTheme } from '../context/ThemeContext';
@@ -45,36 +58,72 @@ const MainLayout: React.FC = () => {
 
   const navItems = [
     { path: '/', label: t('nav.about'), icon: <User size={20} aria-hidden="true" /> },
-    { path: '/experiences', label: t('nav.experiences'), icon: <Briefcase size={20} aria-hidden="true" />, visible: settings?.show_experiences !== false },
-    { path: '/educations', label: t('nav.educations'), icon: <GraduationCap size={20} aria-hidden="true" /> },
+    {
+      path: '/experiences',
+      label: t('nav.experiences'),
+      icon: <Briefcase size={20} aria-hidden="true" />,
+      visible: settings?.show_experiences !== false,
+    },
+    {
+      path: '/educations',
+      label: t('nav.educations'),
+      icon: <GraduationCap size={20} aria-hidden="true" />,
+    },
     { path: '/skills', label: t('nav.skills'), icon: <Wand2 size={20} aria-hidden="true" /> },
-    { path: '/projects', label: t('nav.projects'), icon: <FolderGit size={20} aria-hidden="true" />, visible: settings?.show_projects !== false },
-    { path: '/packages', label: t('nav.packages'), icon: <PackageIcon size={20} aria-hidden="true" />, visible: settings?.show_packages !== false },
-    { path: '/articles', label: t('nav.articles'), icon: <BookOpen size={20} aria-hidden="true" /> },
-    { path: '/certificates', label: t('nav.certificates'), icon: <Award size={20} aria-hidden="true" />, visible: settings?.show_certificates !== false },
-  ].filter(item => item.visible !== false);
+    {
+      path: '/projects',
+      label: t('nav.projects'),
+      icon: <FolderGit size={20} aria-hidden="true" />,
+      visible: settings?.show_projects !== false,
+    },
+    {
+      path: '/packages',
+      label: t('nav.packages'),
+      icon: <PackageIcon size={20} aria-hidden="true" />,
+      visible: settings?.show_packages !== false,
+    },
+    {
+      path: '/articles',
+      label: t('nav.articles'),
+      icon: <BookOpen size={20} aria-hidden="true" />,
+    },
+    {
+      path: '/certificates',
+      label: t('nav.certificates'),
+      icon: <Award size={20} aria-hidden="true" />,
+      visible: settings?.show_certificates !== false,
+    },
+  ].filter((item) => item.visible !== false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   // Extracted Sidebar content allowing unique layoutId suffix to prevent framer-motion collisions
-  const SidebarContent = ({ isMobile = false, isCollapsed = false }: { isMobile?: boolean, isCollapsed?: boolean }) => (
+  const SidebarContent = ({
+    isMobile = false,
+    isCollapsed = false,
+  }: {
+    isMobile?: boolean;
+    isCollapsed?: boolean;
+  }) => (
     <>
-      <div className={`p-6 flex flex-col ${isCollapsed ? 'items-center justify-center' : 'items-start justify-between'}`}>
-        <div className="flex items-center justify-between w-full">
+      <div
+        className={`flex flex-col p-6 ${isCollapsed ? 'items-center justify-center' : 'items-start justify-between'}`}
+      >
+        <div className="flex w-full items-center justify-between">
           {!isCollapsed && (
-            <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-500 bg-clip-text text-transparent truncate">
+            <h1 className="truncate bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-blue-400 dark:to-indigo-500">
               ResuMesh
             </h1>
           )}
           {isCollapsed && (
-            <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-500 bg-clip-text text-transparent">
+            <h1 className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-blue-400 dark:to-indigo-500">
               R
             </h1>
           )}
           {isMobile && (
             <button
               onClick={closeMobileMenu}
-              className="md:hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md p-2 -mr-2"
+              className="-mr-2 rounded-md p-2 text-gray-500 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden dark:text-gray-400 dark:hover:text-white"
               aria-label="Menüyü Kapat"
             >
               <X size={24} aria-hidden="true" />
@@ -82,21 +131,23 @@ const MainLayout: React.FC = () => {
           )}
         </div>
         {!isCollapsed && config?.hero?.fullName && (
-          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1.5 tracking-wide truncate max-w-full">
+          <span className="mt-1.5 max-w-full truncate text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400">
             {config.hero.fullName}
           </span>
         )}
       </div>
-      <nav className={`flex-1 space-y-2 mt-4 relative ${isCollapsed ? 'px-2' : 'px-4'}`}>
+      <nav className={`relative mt-4 flex-1 space-y-2 ${isCollapsed ? 'px-2' : 'px-4'}`}>
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+          const isActive =
+            location.pathname === item.path ||
+            (item.path !== '/' && location.pathname.startsWith(item.path));
 
           return (
             <NavLink
               key={item.path}
               to={item.path}
               onClick={closeMobileMenu}
-              className={`flex items-center ${isCollapsed ? 'justify-center p-3' : 'space-x-3 px-4 py-3'} rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-10 ${
+              className={`flex items-center ${isCollapsed ? 'justify-center p-3' : 'space-x-3 px-4 py-3'} relative z-10 rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 isActive
                   ? 'text-blue-700 dark:text-blue-400'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
@@ -106,12 +157,12 @@ const MainLayout: React.FC = () => {
               {isActive && (
                 <motion.div
                   layoutId={`activeTab-${isMobile ? 'mobile' : 'desktop'}`}
-                  className="absolute inset-0 bg-blue-100 border border-blue-200 dark:bg-blue-600/20 dark:border-blue-600/30 rounded-lg -z-10"
+                  className="absolute inset-0 -z-10 rounded-lg border border-blue-200 bg-blue-100 dark:border-blue-600/30 dark:bg-blue-600/20"
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}
               {item.icon}
-              {!isCollapsed && <span className="font-medium truncate">{item.label}</span>}
+              {!isCollapsed && <span className="truncate font-medium">{item.label}</span>}
             </NavLink>
           );
         })}
@@ -119,12 +170,12 @@ const MainLayout: React.FC = () => {
 
       {/* Desktop Collapse Toggle */}
       {!isMobile && (
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex justify-center">
+        <div className="flex justify-center border-t border-gray-200 p-4 dark:border-gray-800">
           <button
             onClick={() => setIsDesktopMenuCollapsed(!isCollapsed)}
-            className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            aria-label={isCollapsed ? "Menüyü Genişlet" : "Menüyü Daralt"}
-            title={isCollapsed ? "Menüyü Genişlet" : "Menüyü Daralt"}
+            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+            aria-label={isCollapsed ? 'Menüyü Genişlet' : 'Menüyü Daralt'}
+            title={isCollapsed ? 'Menüyü Genişlet' : 'Menüyü Daralt'}
           >
             <Menu size={20} aria-hidden="true" />
           </button>
@@ -134,12 +185,12 @@ const MainLayout: React.FC = () => {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white overflow-hidden transition-colors duration-300">
+    <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-white">
       {/* Desktop Sidebar */}
       <motion.aside
         animate={{ width: isDesktopMenuCollapsed ? 80 : 256 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="hidden md:flex bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex-col z-20 overflow-hidden no-print"
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="no-print z-20 hidden flex-col overflow-hidden border-r border-gray-200 bg-white md:flex dark:border-gray-800 dark:bg-gray-900"
       >
         <SidebarContent isMobile={false} isCollapsed={isDesktopMenuCollapsed} />
       </motion.aside>
@@ -147,8 +198,10 @@ const MainLayout: React.FC = () => {
       {/* Mobile Sidebar (Drawer) */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <FocusTrap focusTrapOptions={{ clickOutsideDeactivates: true, onDeactivate: closeMobileMenu }}>
-            <div className="fixed inset-0 z-50 md:hidden no-print">
+          <FocusTrap
+            focusTrapOptions={{ clickOutsideDeactivates: true, onDeactivate: closeMobileMenu }}
+          >
+            <div className="no-print fixed inset-0 z-50 md:hidden">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -162,7 +215,7 @@ const MainLayout: React.FC = () => {
                 animate={{ x: 0 }}
                 exit={{ x: '-100%' }}
                 transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
-                className="absolute inset-y-0 left-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col shadow-2xl"
+                className="absolute inset-y-0 left-0 flex w-64 flex-col border-r border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-gray-900"
               >
                 <SidebarContent isMobile={true} />
               </motion.aside>
@@ -172,43 +225,43 @@ const MainLayout: React.FC = () => {
       </AnimatePresence>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+      <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
         {/* Topbar */}
-        <header className="h-20 bg-glass flex items-center justify-between px-4 sm:px-8 sticky top-0 z-30 no-print">
-          <div className="flex items-center flex-1 min-w-0">
+        <header className="bg-glass no-print sticky top-0 z-30 flex h-20 items-center justify-between px-4 sm:px-8">
+          <div className="flex min-w-0 flex-1 items-center">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden mr-2 sm:mr-4 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md p-3"
+              className="mr-2 rounded-md p-3 text-gray-500 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:mr-4 md:hidden dark:text-gray-400 dark:hover:text-white"
               aria-label="Menüyü Aç"
             >
               <Menu size={24} aria-hidden="true" />
             </button>
-            <div className="flex-1 max-w-2xl">
+            <div className="max-w-2xl flex-1">
               <SearchBar />
             </div>
           </div>
-          <div className="ml-4 flex items-center flex-shrink-0 space-x-1 sm:space-x-2">
+          <div className="ml-4 flex flex-shrink-0 items-center space-x-1 sm:space-x-2">
             <LanguageSwitcher />
             <button
               onClick={toggleTheme}
-              className="p-3 text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="rounded-lg p-3 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
               aria-label="Temayı Değiştir"
               title="Temayı Değiştir"
             >
-              {theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? (
+              {theme === 'dark' ||
+              (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? (
                 <Sun size={20} aria-hidden="true" />
               ) : (
                 <Moon size={20} aria-hidden="true" />
               )}
             </button>
-
           </div>
         </header>
 
         {/* Dynamic Page Content with Animations */}
-        <main ref={mainRef} className="flex-1 overflow-y-auto relative flex flex-col">
+        <main ref={mainRef} className="relative flex flex-1 flex-col overflow-y-auto">
           <div className="flex-1 p-4 sm:p-8">
-            <div className="max-w-6xl mx-auto h-full">
+            <div className="mx-auto h-full max-w-6xl">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}

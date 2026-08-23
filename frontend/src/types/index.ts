@@ -143,18 +143,18 @@ export interface SocialLinkItem {
 }
 
 export interface HeroItem {
-    name: string;
-    title: string;
-    description: string;
-    resumeLink: string;
+  name: string;
+  title: string;
+  description: string;
+  resumeLink: string;
 }
 
 export interface MetricItem {
-    id: number;
-    icon: string;
-    value: string;
-    label: string;
-    color: string;
+  id: number;
+  icon: string;
+  value: string;
+  label: string;
+  color: string;
 }
 
 export interface ContentConfig {

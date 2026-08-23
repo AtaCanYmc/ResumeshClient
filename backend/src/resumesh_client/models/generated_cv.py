@@ -1,15 +1,14 @@
 import uuid
 
-from resumesh_client.db import Base
 from sqlalchemy import Column, DateTime, String, Text, func
+
+from resumesh_client.db import Base
 
 
 class GeneratedCV(Base):
     __tablename__ = "generated_cvs"
 
-    id = Column(
-        String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4())
-    )
+    id = Column(String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     job_title = Column(String(255), nullable=False)
     company_name = Column(String(255), nullable=False)
     job_description_url = Column(String(512), nullable=True)

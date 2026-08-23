@@ -1,9 +1,7 @@
 import json
 import uuid
-import pytest
-from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
 
+import pytest
 from resumesh_client.db import SessionLocal, engine
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.models.article import Article
@@ -19,6 +17,8 @@ from resumesh_client.models.skill import Skill
 from resumesh_client.models.social_link import SocialLink
 from resumesh_client.models.system_log import SystemLog
 from resumesh_client.models.video import Video
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 
 
 def test_database_engine_connectivity():
@@ -62,7 +62,11 @@ def test_all_models_crud():
         db.add(p)
 
         # 2. Article
-        art = Article(title="Article Test", platform="MEDIUM", url=f"https://medium.com/test-article-crud-{uuid.uuid4()}")
+        art = Article(
+            title="Article Test",
+            platform="MEDIUM",
+            url=f"https://medium.com/test-article-crud-{uuid.uuid4()}",
+        )
         db.add(art)
 
         # 3. Experience
@@ -90,15 +94,29 @@ def test_all_models_crud():
         db.add(pst)
 
         # 9. Video
-        vid = Video(title="Video Test", platform="youtube", url="https://youtube.com", profile="user")
+        vid = Video(
+            title="Video Test",
+            platform="youtube",
+            url="https://youtube.com",
+            profile="user",
+        )
         db.add(vid)
 
         # 10. SocialLink
-        soc = SocialLink(id=str(uuid.uuid4()), platform="github", label="GitHub", url="https://github.com")
+        soc = SocialLink(
+            id=str(uuid.uuid4()),
+            platform="github",
+            label="GitHub",
+            url="https://github.com",
+        )
         db.add(soc)
 
         # 11. Section
-        sec = Section(id=str(uuid.uuid4()), key=f"test_sec_key_{uuid.uuid4()}", title="Test Section")
+        sec = Section(
+            id=str(uuid.uuid4()),
+            key=f"test_sec_key_{uuid.uuid4()}",
+            title="Test Section",
+        )
         db.add(sec)
 
         # 12. AppSetting

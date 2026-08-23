@@ -1,6 +1,6 @@
-import pytest
 from unittest.mock import patch
 
+import pytest
 from resumesh_client.db import SessionLocal
 from resumesh_client.providers.supabase.client import SupabaseClientManager
 from resumesh_client.repositories.article import ArticleRepository
@@ -57,15 +57,19 @@ async def test_article_repository_upsert_and_fetch():
 
 def test_supabase_client_manager_initialization():
     """Verify SupabaseClientManager retrieves or raises error if unconfigured."""
-    with patch("resumesh_client.config.settings.SUPABASE_URL", "https://test.supabase.co"), \
-         patch("resumesh_client.config.settings.SUPABASE_KEY", "test-key-123"):
+    with (
+        patch("resumesh_client.config.settings.SUPABASE_URL", "https://test.supabase.co"),
+        patch("resumesh_client.config.settings.SUPABASE_KEY", "test-key-123"),
+    ):
         SupabaseClientManager._client = None
         client = SupabaseClientManager.get_client()
         assert client is not None
 
-    with patch("resumesh_client.config.settings.SUPABASE_URL", None), \
-         patch("resumesh_client.config.settings.SUPABASE_KEY", None), \
-         patch("os.getenv", return_value=None):
+    with (
+        patch("resumesh_client.config.settings.SUPABASE_URL", None),
+        patch("resumesh_client.config.settings.SUPABASE_KEY", None),
+        patch("os.getenv", return_value=None),
+    ):
         SupabaseClientManager._client = None
         with pytest.raises(ValueError, match="SUPABASE_URL and SUPABASE_KEY must be defined"):
             SupabaseClientManager.get_client()

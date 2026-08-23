@@ -1,17 +1,16 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from resumesh_client.schemas.skill import SkillResponse
+
 from resumesh_client.db import get_db
 from resumesh_client.models.skill import Skill
+from resumesh_client.schemas.skill import SkillResponse
 
 router = APIRouter(prefix="/api/v1/skills", tags=["Skills"])
 
 
 @router.get("", response_model=List[SkillResponse])
-async def list_skills(
-    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
-):
+async def list_skills(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
     return db.query(Skill).offset(skip).limit(limit).all()
 
 
