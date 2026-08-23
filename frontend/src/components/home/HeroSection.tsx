@@ -31,6 +31,13 @@ const HeroSection: React.FC = () => {
   const { data: config, isLoading } = useContentConfig(i18n.language);
   const { isDownloading, handleDownload } = useDownloadResume(config?.hero?.resumeLink);
 
+  const avatarSrc = React.useMemo(() => {
+    const img = config?.hero?.avatarImage;
+    if (img && img.startsWith('http')) return img;
+    if (img && img.startsWith('/api/')) return `${env.API_URL}${img}`;
+    return `${env.API_URL}/api/v1/avatar/profile_pic.jpeg`;
+  }, [config?.hero?.avatarImage, env.API_URL]);
+
   return (
     <div className="relative my-8 flex min-h-[50vh] items-center">
       <div className="flex min-h-[360px] w-full flex-col items-center justify-between gap-10 lg:flex-row">
@@ -125,28 +132,13 @@ const HeroSection: React.FC = () => {
           className="hidden flex-1 items-center justify-center lg:flex"
         >
           <div className="relative flex h-[340px] w-[340px] flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-white p-8 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
-            {config?.hero?.avatarImage || env.GITHUB_USERNAME ? (
-              <div className="mb-5 h-28 w-28 overflow-hidden rounded-full border border-zinc-200 dark:border-zinc-700/80">
-                <img
-                  src={
-                    config.hero.avatarImage?.startsWith('http')
-                      ? config.hero.avatarImage
-                      : config.hero.avatarImage?.startsWith('/api/v1/avatar/')
-                        ? `${env.API_URL}${config.hero.avatarImage}/url`
-                        : config.hero.avatarImage?.startsWith('/')
-                          ? `${env.API_URL}${config.hero.avatarImage}`
-                          : config.hero.avatarImage ||
-                            `https://github.com/${env.GITHUB_USERNAME}.png`
-                  }
-                  alt={config.hero.fullName}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="mb-5 flex h-28 w-28 items-center justify-center rounded-full border border-zinc-200 bg-zinc-100 font-mono text-2xl font-bold text-zinc-800 dark:border-zinc-700/80 dark:bg-zinc-900 dark:text-zinc-200">
-                AY
-              </div>
-            )}
+            <div className="mb-5 h-28 w-28 overflow-hidden rounded-full border border-zinc-200 dark:border-zinc-700/80">
+              <img
+                src={avatarSrc}
+                alt={config?.hero?.fullName || 'Profile Picture'}
+                className="h-full w-full object-cover"
+              />
+            </div>
             <h3 className="font-mono text-lg font-bold text-zinc-900 dark:text-zinc-100">
               {config?.hero?.fullName || config?.hero?.name}
             </h3>
