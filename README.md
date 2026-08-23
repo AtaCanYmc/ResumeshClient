@@ -82,6 +82,31 @@ npm run test
 
 ---
 
+## 🗄️ Supabase CLI Migrations
+
+This repository includes native **Supabase CLI** migration scripts located under `supabase/migrations/`:
+
+```bash
+# Link your Supabase Cloud project
+npm run db:link <project-ref>
+
+# Apply pending SQL migrations to Supabase Cloud
+npm run db:push
+
+# Create a new timestamped migration SQL file
+npm run db:new <migration_name>
+
+# Check migration status
+npm run db:status
+```
+
+*Or run directly via helper script:*
+```bash
+./scripts/supabase.sh push
+```
+
+---
+
 ## 📄 License
 
 Distributed under the Apache License 2.0. See [LICENSE](LICENSE) for more information.

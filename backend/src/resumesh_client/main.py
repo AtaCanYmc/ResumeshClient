@@ -1,15 +1,13 @@
 """
-ResuMesh API Entrypoint - Fast REST API
+ResuMesh Client API Entrypoint - Read-Only Visitor REST Service
 """
 
 import resumesh_storage.models  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from resumesh_client.routers import (
-    admin,
     app_settings,
     articles,
-    auth,
     avatar,
     certificates,
     cv,
@@ -19,13 +17,11 @@ from resumesh_client.routers import (
     packages,
     posts,
     projects,
-    rxresume,
     search,
     sections,
     seo,
     skills,
     social_links,
-    storage,
     videos,
 )
 from resumesh_core.config import settings
@@ -35,7 +31,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="Open Source Intelligent Portfolio and CV Management Engine",
+    description="Open Source Intelligent Portfolio Visitor API Engine",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -46,12 +42,11 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET"],
     allow_headers=["*"],
 )
 
 app.include_router(health.router)
-app.include_router(auth.router)
 app.include_router(projects.router)
 app.include_router(articles.router)
 app.include_router(educations.router)
@@ -65,18 +60,15 @@ app.include_router(social_links.router)
 app.include_router(sections.router)
 app.include_router(app_settings.router)
 app.include_router(search.router)
-app.include_router(admin.router)
 app.include_router(cv.router)
 app.include_router(avatar.router)
-app.include_router(storage.router)
-app.include_router(rxresume.router)
 app.include_router(seo.router)
 
 
 @app.get("/")
 def read_root():
     return {
-        "message": "Welcome to ResuMesh API Core Engine",
+        "message": "Welcome to ResuMesh Visitor API Service",
         "version": "1.0.0",
         "docs": "/docs",
     }

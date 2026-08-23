@@ -34,12 +34,17 @@ It powers all visitor-facing REST endpoints, search filtering, article retrieval
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-3. **Install dependencies in editable mode:**
+3. **Environment Setup:**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Install dependencies in editable mode:**
    ```bash
    pip install -e /path/to/resumesh-core -e /path/to/resumesh-storage -e /path/to/resumesh-scrapers -e .
    ```
 
-4. **Start the local server:**
+5. **Start the local server:**
    ```bash
    source .venv/bin/activate
    uvicorn resumesh_client.main:app --host 0.0.0.0 --port 8000 --reload

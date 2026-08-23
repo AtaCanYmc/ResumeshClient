@@ -1,7 +1,7 @@
 from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, Query
-from resumesh_core.schemas.package import PackageCreate, PackageResponse, PackageUpdate
-from resumesh_client.auth import get_current_admin
+from resumesh_core.schemas.package import PackageResponse
 from resumesh_storage.db import get_db
 from resumesh_storage.models.package import Package
 
@@ -9,14 +9,15 @@ router = APIRouter(prefix="/api/v1/packages", tags=["Packages"])
 
 
 @router.get("", response_model=List[PackageResponse])
-async def list_packages(skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)):
+async def list_packages(
+    skip: int = Query(0, ge=0), limit: int = Query(100, ge=1), db=Depends(get_db)
+):
     return db.query(Package).offset(skip).limit(limit).all()
 
 
-@router.post("", response_model=PackageResponse)
-async def create_package(payload: PackageCreate, db=Depends(get_db), admin=Depends(get_current_admin)):
-    item = Package(**payload.model_dump(exclude_unset=True))
-    db.add(item)
-    db.commit()
-    db.refresh(item)
+@router.get("/{package_id}", response_model=PackageResponse)
+async def get_package(package_id: str, db=Depends(get_db)):
+    item = db.query(Package).filter(Package.id == package_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Package not found")
     return item
