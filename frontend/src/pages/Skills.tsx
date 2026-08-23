@@ -47,15 +47,17 @@ export default function Skills() {
       <SEO title={`${t('skills.title')} | ResuMesh`} description={t('skills.subtitle')} />
       <div className="py-6">
         <div className="mb-6">
-          <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+          <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
             {t('skills.title')}
           </h1>
-          <p className="mt-1 font-mono text-xs text-zinc-400">{t('skills.subtitle')}</p>
+          <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+            {t('skills.subtitle')}
+          </p>
         </div>
 
         {skills.length === 0 ? (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 py-12 text-center text-zinc-400">
-            <Wand2 className="mx-auto mb-3 h-10 w-10 text-zinc-500" />
+          <div className="rounded-xl border border-zinc-200 bg-white py-12 text-center text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400">
+            <Wand2 className="mx-auto mb-3 h-10 w-10 text-zinc-400 dark:text-zinc-500" />
             <p className="font-mono text-xs">{t('skills.emptyDesc')}</p>
           </div>
         ) : (
@@ -63,10 +65,10 @@ export default function Skills() {
             {Object.entries(groupedSkills).map(([category, catSkills]) => (
               <div
                 key={category}
-                className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 transition-colors hover:border-zinc-700/80"
+                className="rounded-xl border border-zinc-200 bg-white p-5 transition-colors hover:border-zinc-300 dark:border-zinc-800/80 dark:bg-zinc-900/50 dark:hover:border-zinc-700/80"
               >
-                <h3 className="mb-4 flex items-center gap-2 border-b border-zinc-800/80 pb-3 font-mono text-base font-semibold text-zinc-100">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-md border border-zinc-800 bg-zinc-950 text-zinc-400">
+                <h3 className="mb-4 flex items-center gap-2 border-b border-zinc-200/80 pb-3 font-mono text-base font-semibold text-zinc-900 dark:border-zinc-800/80 dark:text-zinc-100">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md border border-zinc-200 bg-zinc-100 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
                     <Wand2 size={14} />
                   </span>
                   {category}
@@ -75,7 +77,7 @@ export default function Skills() {
                   {catSkills.map((skill) => (
                     <div
                       key={skill.id}
-                      className="cursor-default rounded-md border border-zinc-800 bg-zinc-950 px-3 py-1 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                      className="cursor-default rounded-md border border-zinc-200 bg-zinc-100 px-3 py-1 font-mono text-xs text-zinc-700 transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
                     >
                       {skill.name}
                     </div>

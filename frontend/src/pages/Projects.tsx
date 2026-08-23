@@ -53,10 +53,12 @@ export default function Projects() {
       <>
         <SEO title={`Hata | ResuMesh`} description="Projeler yüklenirken bir hata oluştu." />
         <div className="mx-auto max-w-4xl py-8">
-          <div className="flex min-h-[30vh] flex-col items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
-            <AlertOctagon className="mb-3 h-12 w-12 text-zinc-400" />
-            <h2 className="mb-1.5 text-lg font-bold text-zinc-200">Projeler Yüklenemedi</h2>
-            <p className="max-w-md text-sm text-zinc-400">
+          <div className="flex min-h-[30vh] flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
+            <AlertOctagon className="mb-3 h-12 w-12 text-zinc-500 dark:text-zinc-400" />
+            <h2 className="mb-1.5 text-lg font-bold text-zinc-900 dark:text-zinc-200">
+              Projeler Yüklenemedi
+            </h2>
+            <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
               Açık kaynak projeleri yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.
             </p>
           </div>
@@ -95,10 +97,12 @@ export default function Projects() {
       <div className="py-6">
         <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-end">
           <div>
-            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
               {t('projects.title')}
             </h1>
-            <p className="mt-1 font-mono text-xs text-zinc-400">{t('projects.subtitle')}</p>
+            <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+              {t('projects.subtitle')}
+            </p>
           </div>
         </div>
 
@@ -109,8 +113,8 @@ export default function Projects() {
               onClick={() => setFilter('All')}
               className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
                 filter === 'All'
-                  ? 'border-zinc-700 bg-zinc-900 text-zinc-100'
-                  : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                  ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               All
@@ -121,8 +125,8 @@ export default function Projects() {
                 onClick={() => setFilter(lang)}
                 className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
                   filter === lang
-                    ? 'border-zinc-700 bg-zinc-900 text-zinc-100'
-                    : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                    ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                    : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
                 }`}
               >
                 {lang}
@@ -134,7 +138,7 @@ export default function Projects() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-800 bg-zinc-950 py-2 pr-9 pl-3 font-mono text-xs text-zinc-300 focus:border-zinc-700 focus:outline-none"
+              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
             >
               <option value="stars">Yıldız Sayısına Göre</option>
               <option value="forks">Fork Sayısına Göre</option>
@@ -182,17 +186,19 @@ export default function Projects() {
             ))
           ) : (
             <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-100 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
                 <FolderSearch size={24} aria-hidden="true" />
               </div>
-              <h3 className="mb-1 text-base font-bold text-zinc-200">Proje Bulunamadı</h3>
-              <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-400">
-                Seçtiğiniz <span className="text-zinc-200">"{filter}"</span> filtresine uygun proje
-                bulunamadı.
+              <h3 className="mb-1 text-base font-bold text-zinc-900 dark:text-zinc-200">
+                Proje Bulunamadı
+              </h3>
+              <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                Seçtiğiniz <span className="text-zinc-900 dark:text-zinc-200">"{filter}"</span>{' '}
+                filtresine uygun proje bulunamadı.
               </p>
               <button
                 onClick={() => setFilter('All')}
-                className="rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                className="rounded-lg border border-zinc-200 bg-white px-4 py-2 font-mono text-xs text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
               >
                 Filtreleri Temizle
               </button>
@@ -207,7 +213,7 @@ export default function Projects() {
         >
           {selectedProject && (
             <div className="space-y-5">
-              <p className="text-sm leading-relaxed text-zinc-300">
+              <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                 {selectedProject.description || t('common.noDescription')}
               </p>
 
@@ -215,14 +221,14 @@ export default function Projects() {
                 {selectedProject.languages?.map((lang) => (
                   <span
                     key={lang}
-                    className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 font-mono text-xs text-zinc-400"
+                    className="rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-1 font-mono text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400"
                   >
                     {lang}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center gap-5 border-t border-zinc-800 pt-4 font-mono text-xs text-zinc-400">
+              <div className="flex items-center gap-5 border-t border-zinc-200 pt-4 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
                 <div className="flex items-center gap-1.5">
                   <Star size={15} aria-hidden="true" />
                   <span>{selectedProject.stars || 0} Stars</span>
@@ -237,7 +243,7 @@ export default function Projects() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="ml-auto flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                    className="ml-auto flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-2 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
                   >
                     <Code size={15} aria-hidden="true" />
                     <span>{t('common.viewOnGithub')}</span>

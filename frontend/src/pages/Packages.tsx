@@ -37,10 +37,12 @@ export default function Packages() {
       <>
         <SEO title={`Hata | ResuMesh`} description="Paketler yüklenirken bir hata oluştu." />
         <div className="mx-auto max-w-4xl py-8">
-          <div className="flex min-h-[30vh] flex-col items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
-            <AlertOctagon className="mb-3 h-12 w-12 text-zinc-400" />
-            <h2 className="mb-1.5 text-lg font-bold text-zinc-200">Paketler Yüklenemedi</h2>
-            <p className="max-w-md text-sm text-zinc-400">
+          <div className="flex min-h-[30vh] flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
+            <AlertOctagon className="mb-3 h-12 w-12 text-zinc-500 dark:text-zinc-400" />
+            <h2 className="mb-1.5 text-lg font-bold text-zinc-900 dark:text-zinc-200">
+              Paketler Yüklenemedi
+            </h2>
+            <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
               Paketler ve kütüphaneler yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar
               deneyin.
             </p>
@@ -78,10 +80,12 @@ export default function Packages() {
       <div className="py-6">
         <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-end">
           <div>
-            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
               {t('packages.title')}
             </h1>
-            <p className="mt-1 font-mono text-xs text-zinc-400">{t('packages.subtitle')}</p>
+            <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+              {t('packages.subtitle')}
+            </p>
           </div>
         </div>
 
@@ -92,8 +96,8 @@ export default function Packages() {
               onClick={() => setPlatformFilter('All')}
               className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
                 platformFilter === 'All'
-                  ? 'border-zinc-700 bg-zinc-900 text-zinc-100'
-                  : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                  ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               All
@@ -104,8 +108,8 @@ export default function Packages() {
                 onClick={() => setPlatformFilter(platform)}
                 className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
                   platformFilter === platform
-                    ? 'border-zinc-700 bg-zinc-900 text-zinc-100'
-                    : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                    ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                    : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
                 }`}
               >
                 {platform}
@@ -117,7 +121,7 @@ export default function Packages() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-800 bg-zinc-950 py-2 pr-9 pl-3 font-mono text-xs text-zinc-300 focus:border-zinc-700 focus:outline-none"
+              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
             >
               <option value="downloads">Aylık İndirmeye Göre</option>
               <option value="name">Alfabetik (A-Z)</option>
@@ -176,16 +180,18 @@ export default function Packages() {
             })
           ) : (
             <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-100 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
                 <FolderSearch size={24} aria-hidden="true" />
               </div>
-              <h3 className="mb-1 text-base font-bold text-zinc-200">Paket Bulunamadı</h3>
-              <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-400">
+              <h3 className="mb-1 text-base font-bold text-zinc-900 dark:text-zinc-200">
+                Paket Bulunamadı
+              </h3>
+              <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-600 dark:text-zinc-400">
                 Seçtiğiniz filtreye uygun bir paket veya kütüphane bulunamadı.
               </p>
               <button
                 onClick={() => setPlatformFilter('All')}
-                className="rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                className="rounded-lg border border-zinc-200 bg-white px-4 py-2 font-mono text-xs text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
               >
                 Filtreleri Temizle
               </button>
@@ -201,18 +207,18 @@ export default function Packages() {
         >
           {selectedPackage && (
             <div className="space-y-5">
-              <p className="text-sm leading-relaxed text-zinc-300">
+              <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                 {selectedPackage.description || t('common.noDescription')}
               </p>
 
               <div className="flex flex-wrap items-center gap-1.5">
                 {selectedPackage.platform && (
-                  <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 font-mono text-xs text-zinc-300">
+                  <span className="rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-1 font-mono text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
                     {selectedPackage.platform}
                   </span>
                 )}
                 {selectedPackage.version && (
-                  <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 font-mono text-xs text-zinc-400">
+                  <span className="rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-1 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
                     v{selectedPackage.version}
                   </span>
                 )}
@@ -220,19 +226,19 @@ export default function Packages() {
                   selectedPackage.tags.split(',').map((tag) => (
                     <span
                       key={tag.trim()}
-                      className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 font-mono text-xs text-zinc-400"
+                      className="rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-1 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400"
                     >
                       {tag.trim()}
                     </span>
                   ))}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 border-t border-zinc-800 pt-4 font-mono text-xs text-zinc-400">
+              <div className="flex flex-wrap items-center gap-4 border-t border-zinc-200 pt-4 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
                 {selectedPackage.last_month_downloads !== undefined &&
                   selectedPackage.last_month_downloads > 0 && (
                     <div className="flex items-center gap-1.5">
                       <Download size={15} aria-hidden="true" />
-                      <span className="font-semibold text-zinc-200">
+                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                         {selectedPackage.last_month_downloads.toLocaleString()}
                       </span>
                       <span>aylık indirme</span>
@@ -245,7 +251,7 @@ export default function Packages() {
                       href={selectedPackage.docs_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                      className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100 px-3 py-1.5 font-mono text-xs text-zinc-700 transition-colors hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
                     >
                       <BookOpen size={14} aria-hidden="true" />
                       <span>{t('packages.docs')}</span>
@@ -257,7 +263,7 @@ export default function Packages() {
                       href={selectedPackage.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 py-1.5 font-mono text-xs font-semibold text-zinc-200 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                      className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100 px-3.5 py-1.5 font-mono text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
                     >
                       <ExternalLink size={14} aria-hidden="true" />
                       <span>Platform Sayfası</span>

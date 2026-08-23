@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where(.dark, .dark *));
 
 @layer base {
   body {
-    @apply bg-zinc-950 text-zinc-100 antialiased selection:bg-zinc-800 selection:text-zinc-100;
+    @apply bg-zinc-50 text-zinc-900 antialiased selection:bg-zinc-800 selection:text-zinc-100 dark:bg-zinc-950 dark:text-zinc-100;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 }
@@ -22,8 +22,8 @@
     animation-iteration-count: infinite;
     will-change: transform;
   }
-  .border-clean {
-    @apply border border-zinc-800/80 transition-colors duration-150 hover:border-zinc-700/80;
+  .bg-glass {
+    @apply border border-zinc-200/80 bg-white/80 backdrop-blur-sm dark:border-zinc-800/80 dark:bg-zinc-950/80;
   }
 }
 

@@ -34,8 +34,10 @@ export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group flex h-full min-h-[200px] flex-col rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-6 transition-colors duration-150 outline-none',
-          onClick ? 'cursor-pointer hover:border-zinc-700/80 hover:bg-zinc-900/80' : '',
+          'group flex h-full min-h-[200px] flex-col rounded-xl border border-zinc-200 bg-white p-6 transition-colors duration-150 outline-none dark:border-zinc-800/80 dark:bg-zinc-900/50',
+          onClick
+            ? 'cursor-pointer hover:border-zinc-300 hover:bg-zinc-50/50 dark:hover:border-zinc-700/80 dark:hover:bg-zinc-900/80'
+            : '',
           className
         )}
         {...clickableProps}
@@ -43,7 +45,7 @@ export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
       >
         <div className="mb-3 flex items-start justify-between gap-3">
           <h3
-            className="line-clamp-1 text-base font-semibold text-zinc-100 transition-colors group-hover:text-white"
+            className="line-clamp-1 text-base font-semibold text-zinc-900 transition-colors group-hover:text-black dark:text-zinc-100 dark:group-hover:text-white"
             title={title}
           >
             {title}
@@ -54,16 +56,16 @@ export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="text-zinc-500 transition-colors hover:text-zinc-200"
+              className="text-zinc-400 transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-200"
               aria-label={`${title} linkine git`}
             >
               {icon || <ExternalLink size={18} />}
             </a>
           )}
-          {!externalLink && icon && <div className="text-zinc-500">{icon}</div>}
+          {!externalLink && icon && <div className="text-zinc-400 dark:text-zinc-500">{icon}</div>}
         </div>
 
-        <p className="mb-5 line-clamp-3 flex-1 text-sm leading-relaxed text-zinc-400">
+        <p className="mb-5 line-clamp-3 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           {description || 'Açıklama bulunmuyor.'}
         </p>
 
@@ -73,21 +75,21 @@ export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
               {tags.slice(0, 3).map((tag, idx) => (
                 <span
                   key={idx}
-                  className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5 font-mono text-[11px] text-zinc-400"
+                  className="rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400"
                   title={tag}
                 >
                   {tag}
                 </span>
               ))}
               {tags.length > 3 && (
-                <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5 font-mono text-[11px] text-zinc-500">
+                <span className="rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-500">
                   +{tags.length - 3}
                 </span>
               )}
             </div>
           )}
           {footerContent && (
-            <div className="ml-auto flex flex-shrink-0 items-center space-x-2 font-mono text-xs text-zinc-500">
+            <div className="ml-auto flex flex-shrink-0 items-center space-x-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">
               {footerContent}
             </div>
           )}

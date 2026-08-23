@@ -45,10 +45,12 @@ export default function SkillsMarquee() {
   return (
     <div className="relative py-10">
       <div className="mb-8">
-        <h2 className="font-mono text-2xl font-bold tracking-tight text-zinc-100 sm:text-3xl">
+        <h2 className="font-mono text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
           {t('home.skills')}
         </h2>
-        <p className="mt-1 font-mono text-xs text-zinc-400">{t('home.skillsSubtitle')}</p>
+        <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+          {t('home.skillsSubtitle')}
+        </p>
       </div>
 
       {/* Categories Selector Tabs */}
@@ -61,8 +63,8 @@ export default function SkillsMarquee() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`rounded-lg border px-4 py-2 font-mono text-xs font-medium transition-colors focus:outline-none ${
                 isActive
-                  ? 'border-zinc-700 bg-zinc-900 text-zinc-100'
-                  : 'border-zinc-800/80 bg-zinc-950/60 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                  ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800/80 dark:bg-zinc-950/60 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               {cat.label}
@@ -91,14 +93,16 @@ export default function SkillsMarquee() {
                 initial="hidden"
                 animate="show"
                 exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
-                className="flex items-center gap-3.5 rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 transition-colors hover:border-zinc-700/80"
+                className="flex items-center gap-3.5 rounded-xl border border-zinc-200 bg-white p-3.5 transition-colors hover:border-zinc-300 dark:border-zinc-800/80 dark:bg-zinc-900/50 dark:hover:border-zinc-700/80"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-300">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-100 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
                   <Icon size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="truncate text-sm font-semibold text-zinc-100">{skill.name}</h4>
-                  <p className="truncate font-mono text-[11px] text-zinc-400">
+                  <h4 className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                    {skill.name}
+                  </h4>
+                  <p className="truncate font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                     {skill.category.charAt(0).toUpperCase() + skill.category.slice(1)}
                   </p>
                 </div>

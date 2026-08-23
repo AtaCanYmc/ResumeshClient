@@ -45,24 +45,24 @@ const HeroSection: React.FC = () => {
           >
             <motion.h1
               variants={textVariants}
-              className="text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl lg:text-6xl"
+              className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-100"
             >
               {t('home.greeting')}{' '}
-              <span className="text-zinc-100 underline decoration-zinc-700 underline-offset-8">
+              <span className="text-zinc-900 underline decoration-zinc-400 underline-offset-8 dark:text-zinc-100 dark:decoration-zinc-700">
                 {config.hero.name}
               </span>
             </motion.h1>
 
             <motion.div
               variants={textVariants}
-              className="text-xl font-medium tracking-tight text-zinc-300 sm:text-2xl lg:text-3xl"
+              className="text-xl font-medium tracking-tight text-zinc-700 sm:text-2xl lg:text-3xl dark:text-zinc-300"
             >
               {config.hero.title}
             </motion.div>
 
             <motion.p
               variants={textVariants}
-              className="mx-auto max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg lg:mx-0"
+              className="mx-auto max-w-2xl text-base leading-relaxed text-zinc-600 sm:text-lg lg:mx-0 dark:text-zinc-400"
             >
               {config.hero.description}
             </motion.p>
@@ -74,7 +74,7 @@ const HeroSection: React.FC = () => {
               <button
                 onClick={handleDownload}
                 disabled={isDownloading}
-                className="flex items-center justify-center gap-2 rounded-lg bg-zinc-100 px-6 py-2.5 text-sm font-semibold text-zinc-950 transition-colors hover:bg-white focus:outline-none disabled:opacity-70"
+                className="flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-zinc-100 transition-colors hover:bg-black focus:outline-none disabled:opacity-70 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
                 aria-label={t('hero.downloadResume')}
               >
                 {isDownloading ? (
@@ -89,7 +89,7 @@ const HeroSection: React.FC = () => {
 
               <Link
                 to="/projects"
-                className="flex items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/60 px-6 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-700 hover:bg-zinc-900"
+                className="flex items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-6 py-2.5 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
                 aria-label={t('hero.viewProjects')}
               >
                 <span>{t('hero.viewProjects')}</span>
@@ -105,7 +105,7 @@ const HeroSection: React.FC = () => {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-lg border border-zinc-800/80 bg-zinc-900/60 p-2.5 text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-100"
+                      className="rounded-lg border border-zinc-200 bg-white p-2.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800/80 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
                       aria-label={social.label || social.platform}
                     >
                       <Icon size={18} />
@@ -124,9 +124,9 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="hidden flex-1 items-center justify-center lg:flex"
         >
-          <div className="relative flex h-[340px] w-[340px] flex-col items-center justify-center rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-8 shadow-sm">
+          <div className="relative flex h-[340px] w-[340px] flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-white p-8 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
             {config?.hero?.avatarImage || env.GITHUB_USERNAME ? (
-              <div className="mb-5 h-28 w-28 overflow-hidden rounded-full border border-zinc-700/80">
+              <div className="mb-5 h-28 w-28 overflow-hidden rounded-full border border-zinc-200 dark:border-zinc-700/80">
                 <img
                   src={
                     config.hero.avatarImage?.startsWith('http')
@@ -143,14 +143,14 @@ const HeroSection: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="mb-5 flex h-28 w-28 items-center justify-center rounded-full border border-zinc-700/80 bg-zinc-900 font-mono text-2xl font-bold text-zinc-200">
+              <div className="mb-5 flex h-28 w-28 items-center justify-center rounded-full border border-zinc-200 bg-zinc-100 font-mono text-2xl font-bold text-zinc-800 dark:border-zinc-700/80 dark:bg-zinc-900 dark:text-zinc-200">
                 AY
               </div>
             )}
-            <h3 className="font-mono text-lg font-bold text-zinc-100">
+            <h3 className="font-mono text-lg font-bold text-zinc-900 dark:text-zinc-100">
               {config?.hero?.fullName || config?.hero?.name}
             </h3>
-            <p className="mt-1.5 text-center font-mono text-xs text-zinc-400">
+            <p className="mt-1.5 text-center font-mono text-xs text-zinc-500 dark:text-zinc-400">
               {config?.hero?.avatarSubtitle}
             </p>
           </div>

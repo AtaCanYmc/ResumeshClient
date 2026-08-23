@@ -3,5 +3,18 @@
   "show_certificates": true,
   "show_videos": true,
   "show_experiences": true,
-  "show_packages": true
+  "show_educations": true,
+  "show_articles": true,
+  "show_skills": true,
+  "show_posts": true,
+  "sections": {
+    "educations": true,
+    "experiences": true,
+    "projects": true,
+    "certificates": true,
+    "articles": true,
+    "videos": true,
+    "skills": true,
+    "posts": true
+  }
 }

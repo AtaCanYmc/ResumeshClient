@@ -46,19 +46,21 @@ export default function Articles() {
       <div className="py-6">
         <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-end">
           <div>
-            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
               {t('articles.title')}
             </h1>
-            <p className="mt-1 font-mono text-xs text-zinc-400">{t('articles.subtitle')}</p>
+            <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+              {t('articles.subtitle')}
+            </p>
           </div>
 
-          <div className="flex rounded-lg border border-zinc-800 bg-zinc-950 p-1 font-mono text-xs">
+          <div className="flex rounded-lg border border-zinc-200 bg-white p-1 font-mono text-xs dark:border-zinc-800 dark:bg-zinc-950">
             <button
               onClick={() => setActiveTab('MEDIUM')}
               className={`rounded-md px-4 py-1.5 font-medium transition-colors ${
                 activeTab === 'MEDIUM'
-                  ? 'border border-zinc-700 bg-zinc-900 text-zinc-100'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'border border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200'
               }`}
             >
               Medium
@@ -67,8 +69,8 @@ export default function Articles() {
               onClick={() => setActiveTab('DEV_TO')}
               className={`rounded-md px-4 py-1.5 font-medium transition-colors ${
                 activeTab === 'DEV_TO'
-                  ? 'border border-zinc-700 bg-zinc-900 text-zinc-100'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'border border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200'
               }`}
             >
               Dev.to
@@ -81,10 +83,10 @@ export default function Articles() {
             <div
               key={article.id}
               onClick={() => setSelectedArticle(article)}
-              className="group block cursor-pointer rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 transition-colors hover:border-zinc-700/80 hover:bg-zinc-900/80"
+              className="group block cursor-pointer rounded-xl border border-zinc-200 bg-white p-5 transition-colors hover:border-zinc-300 hover:bg-zinc-50/50 dark:border-zinc-800/80 dark:bg-zinc-900/50 dark:hover:border-zinc-700/80 dark:hover:bg-zinc-900/80"
             >
               <div className="mb-3 flex items-start justify-between gap-3">
-                <h3 className="line-clamp-2 text-base font-semibold text-zinc-100 transition-colors group-hover:text-white">
+                <h3 className="line-clamp-2 text-base font-semibold text-zinc-900 transition-colors group-hover:text-black dark:text-zinc-100 dark:group-hover:text-white">
                   {article.title}
                 </h3>
                 <a
@@ -92,17 +94,17 @@ export default function Articles() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="shrink-0 text-zinc-500 transition-colors hover:text-zinc-200"
+                  className="shrink-0 text-zinc-400 transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-200"
                 >
                   <ExternalLink size={18} />
                 </a>
               </div>
 
-              <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-zinc-400">
+              <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                 {article.summary || 'Açıklama bulunmuyor.'}
               </p>
 
-              <div className="mt-auto flex items-center space-x-4 border-t border-zinc-800/80 pt-3 font-mono text-xs text-zinc-400">
+              <div className="mt-auto flex items-center space-x-4 border-t border-zinc-200/80 pt-3 font-mono text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
                 {article.published_at && (
                   <div className="flex items-center space-x-1">
                     <Calendar size={13} />
@@ -134,11 +136,11 @@ export default function Articles() {
         >
           {selectedArticle && (
             <div className="space-y-5">
-              <p className="text-sm leading-relaxed text-zinc-300">
+              <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                 {selectedArticle.summary || t('common.noDescription')}
               </p>
 
-              <div className="flex items-center gap-5 border-t border-zinc-800 pt-4 font-mono text-xs text-zinc-400">
+              <div className="flex items-center gap-5 border-t border-zinc-200 pt-4 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
                 {selectedArticle.published_at && (
                   <div className="flex items-center space-x-1.5">
                     <Calendar size={15} />
@@ -155,7 +157,7 @@ export default function Articles() {
                   href={selectedArticle.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-auto flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-xs font-semibold text-zinc-200 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+                  className="ml-auto flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-2 font-mono text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
                 >
                   <ExternalLink size={15} />
                   <span>{t('common.readMore')}</span>
