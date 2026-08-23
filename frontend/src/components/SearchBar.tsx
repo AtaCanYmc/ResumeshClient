@@ -15,7 +15,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-
 import { useEnv } from '../hooks/useEnv';
 
 export default function SearchBar() {
@@ -55,7 +54,6 @@ export default function SearchBar() {
     fetchResults();
   }, [debouncedQuery]);
 
-  // Handle clicking outside to close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -82,8 +80,8 @@ export default function SearchBar() {
   ) => {
     if (!items || items.length === 0) return null;
     return (
-      <div className="mb-4 last:mb-0">
-        <h3 className="mb-2 flex items-center gap-2 px-3 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+      <div className="mb-3 last:mb-0">
+        <h3 className="mb-1.5 flex items-center gap-1.5 px-3 font-mono text-[11px] font-semibold tracking-wider text-zinc-500 uppercase dark:text-zinc-400">
           {icon}
           {title}
         </h3>
@@ -96,20 +94,22 @@ export default function SearchBar() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsMobileExpanded(false)}
-                  className="group flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-gray-800"
+                  className="group flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900"
                 >
                   <div className="flex items-start justify-between">
-                    <span className="text-sm font-medium text-gray-900 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-400">
+                    <span className="text-sm font-medium text-zinc-900 group-hover:text-black dark:text-zinc-200 dark:group-hover:text-white">
                       {item.title}
                     </span>
                     <ExternalLink
                       size={14}
-                      className="text-gray-500 group-hover:text-blue-600 dark:text-gray-600 dark:group-hover:text-blue-400"
+                      className="text-zinc-400 group-hover:text-zinc-700 dark:text-zinc-500 dark:group-hover:text-zinc-200"
                       aria-hidden="true"
                     />
                   </div>
                   {item.subtitle && (
-                    <span className="line-clamp-1 text-xs text-gray-500">{item.subtitle}</span>
+                    <span className="line-clamp-1 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                      {item.subtitle}
+                    </span>
                   )}
                 </a>
               ) : (
@@ -119,13 +119,15 @@ export default function SearchBar() {
                     setIsOpen(false);
                     setIsMobileExpanded(false);
                   }}
-                  className="group flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-gray-800"
+                  className="group flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900"
                 >
-                  <span className="text-sm font-medium text-gray-900 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-400">
+                  <span className="text-sm font-medium text-zinc-900 group-hover:text-black dark:text-zinc-200 dark:group-hover:text-white">
                     {item.title}
                   </span>
                   {item.subtitle && (
-                    <span className="line-clamp-1 text-xs text-gray-500">{item.subtitle}</span>
+                    <span className="line-clamp-1 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                      {item.subtitle}
+                    </span>
                   )}
                 </Link>
               )}
@@ -145,24 +147,22 @@ export default function SearchBar() {
 
   return (
     <div ref={searchRef} className="relative flex w-full justify-end md:block">
-      {/* Mobile Search Icon (only visible when not expanded) */}
       {!isMobileExpanded && (
         <button
-          className="rounded-full p-2 text-gray-500 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden dark:text-gray-400 dark:hover:text-white"
+          className="rounded-lg p-2 text-zinc-500 hover:text-zinc-900 focus:outline-none md:hidden dark:text-zinc-400 dark:hover:text-white"
           onClick={handleMobileExpand}
           aria-label={t('search.open')}
         >
-          <Search size={20} aria-hidden="true" />
+          <Search size={18} aria-hidden="true" />
         </button>
       )}
 
-      {/* Search Input Container */}
       <div
         className={`absolute top-1/2 right-0 w-full -translate-y-1/2 md:relative md:translate-y-0 ${isMobileExpanded ? 'block' : 'hidden md:block'} `}
       >
-        <div className="relative flex items-center rounded-xl border border-gray-300 bg-white shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-blue-500">
+        <div className="relative flex items-center rounded-lg border border-zinc-200 bg-white transition-colors focus-within:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:focus-within:border-zinc-700">
           <Search
-            className="pointer-events-none absolute left-4 h-5 w-5 text-gray-400 dark:text-gray-500"
+            className="pointer-events-none absolute left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500"
             aria-hidden="true"
           />
           <input
@@ -177,18 +177,18 @@ export default function SearchBar() {
               if (query.trim() && results) setIsOpen(true);
             }}
             placeholder={t('search.placeholder')}
-            className="w-full rounded-xl bg-transparent py-2.5 pr-16 pl-12 text-sm text-gray-900 placeholder-gray-500 focus:outline-none dark:text-white"
+            className="w-full rounded-lg bg-transparent py-2 pr-10 pl-9 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder-zinc-500"
             aria-label={t('search.placeholder')}
           />
 
-          <div className="absolute right-3 flex items-center space-x-2">
+          <div className="absolute right-2.5 flex items-center space-x-1.5">
             {loading && (
-              <Loader2 className="h-4 w-4 animate-spin text-blue-500" aria-hidden="true" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-zinc-500" aria-hidden="true" />
             )}
             {query && (
               <button
                 type="button"
-                className="rounded-full p-1 text-gray-400 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:text-white"
+                className="rounded-md p-1 text-zinc-400 hover:text-zinc-900 focus:outline-none dark:hover:text-white"
                 onClick={() => {
                   setQuery('');
                   setIsOpen(false);
@@ -196,19 +196,19 @@ export default function SearchBar() {
                 }}
                 aria-label={t('search.clear')}
               >
-                <X size={16} aria-hidden="true" />
+                <X size={14} aria-hidden="true" />
               </button>
             )}
             {isMobileExpanded && !query && (
               <button
-                className="p-1 text-gray-500 hover:text-gray-900 md:hidden dark:text-gray-400 dark:hover:text-white"
+                className="p-1 text-zinc-500 hover:text-zinc-900 md:hidden dark:text-zinc-400 dark:hover:text-white"
                 onClick={() => {
                   setIsMobileExpanded(false);
                   setIsOpen(false);
                 }}
                 aria-label={t('search.close')}
               >
-                <X size={16} aria-hidden="true" />
+                <X size={14} aria-hidden="true" />
               </button>
             )}
           </div>
@@ -218,56 +218,56 @@ export default function SearchBar() {
       <AnimatePresence>
         {isOpen && query.trim() !== '' && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full right-0 left-0 z-50 mt-3 max-h-[70vh] overflow-hidden overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-2xl md:mt-2 dark:border-gray-800 dark:bg-gray-900"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full right-0 left-0 z-50 mt-2 max-h-[70vh] overflow-hidden overflow-y-auto rounded-xl border border-zinc-200 bg-white p-2 shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
           >
-            <div className="p-2">
-              {!loading && !hasResults && (
-                <div className="flex flex-col items-center justify-center p-8 text-center">
-                  <Search
-                    size={32}
-                    className="mb-3 text-gray-300 dark:text-gray-700"
-                    aria-hidden="true"
-                  />
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {t('search.noResultsTitle')}
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">{t('search.noResultsDesc')}</p>
-                </div>
-              )}
+            {!loading && !hasResults && (
+              <div className="flex flex-col items-center justify-center p-6 text-center">
+                <Search
+                  size={24}
+                  className="mb-2 text-zinc-400 dark:text-zinc-600"
+                  aria-hidden="true"
+                />
+                <p className="font-mono text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                  {t('search.noResultsTitle')}
+                </p>
+                <p className="mt-1 font-mono text-[11px] text-zinc-500">
+                  {t('search.noResultsDesc')}
+                </p>
+              </div>
+            )}
 
-              {results && hasResults && (
-                <>
-                  {renderSection(
-                    t('search.projects'),
-                    results.projects,
-                    <FolderGit size={14} aria-hidden="true" />,
-                    '/projects'
-                  )}
-                  {renderSection(
-                    t('search.experiences'),
-                    results.experiences,
-                    <Briefcase size={14} aria-hidden="true" />,
-                    '/experiences'
-                  )}
-                  {renderSection(
-                    t('search.articles'),
-                    results.articles,
-                    <BookOpen size={14} aria-hidden="true" />,
-                    '/articles'
-                  )}
-                  {renderSection(
-                    t('search.certificates'),
-                    results.certificates,
-                    <Award size={14} aria-hidden="true" />,
-                    '/certificates'
-                  )}
-                </>
-              )}
-            </div>
+            {results && hasResults && (
+              <>
+                {renderSection(
+                  t('search.projects'),
+                  results.projects,
+                  <FolderGit size={13} aria-hidden="true" />,
+                  '/projects'
+                )}
+                {renderSection(
+                  t('search.experiences'),
+                  results.experiences,
+                  <Briefcase size={13} aria-hidden="true" />,
+                  '/experiences'
+                )}
+                {renderSection(
+                  t('search.articles'),
+                  results.articles,
+                  <BookOpen size={13} aria-hidden="true" />,
+                  '/articles'
+                )}
+                {renderSection(
+                  t('search.certificates'),
+                  results.certificates,
+                  <Award size={13} aria-hidden="true" />,
+                  '/certificates'
+                )}
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

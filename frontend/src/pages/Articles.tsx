@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Article } from '../types';
 import axios from 'axios';
-import { ExternalLink, Clock, Calendar, BookOpen } from 'lucide-react';
+import { ExternalLink, Clock, Calendar, BookOpen, Search, X } from 'lucide-react';
 import Modal from '../components/Modal';
 import SEO from '../components/SEO';
 import EmptyState from '../components/ui/EmptyState';
@@ -14,6 +14,7 @@ export default function Articles() {
   const { t } = useTranslation();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'MEDIUM' | 'DEV_TO'>('MEDIUM');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
@@ -31,10 +32,18 @@ export default function Articles() {
     fetchArticles();
   }, []);
 
-  const filteredArticles = articles.filter(
-    (a) =>
-      a.platform?.toUpperCase() === activeTab || (activeTab === 'DEV_TO' && a.platform === 'Dev.to')
-  );
+  const filteredArticles = articles.filter((a) => {
+    const matchesTab =
+      a.platform?.toUpperCase() === activeTab ||
+      (activeTab === 'DEV_TO' && a.platform === 'Dev.to');
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return matchesTab;
+
+    const titleMatch = (a.title || '').toLowerCase().includes(q);
+    const summaryMatch = (a.summary || a.description || '').toLowerCase().includes(q);
+
+    return matchesTab && (titleMatch || summaryMatch);
+  });
 
   if (loading) {
     return <ArticlesSkeleton />;
@@ -52,6 +61,28 @@ export default function Articles() {
             <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
               {t('articles.subtitle')}
             </p>
+          </div>
+        </div>
+
+        {/* Search & Tabs Bar */}
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+          <div className="relative w-full sm:w-72">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Makalelerde ara..."
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pr-8 pl-8 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-700"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              >
+                <X size={14} />
+              </button>
+            )}
           </div>
 
           <div className="flex rounded-lg border border-zinc-200 bg-white p-1 font-mono text-xs dark:border-zinc-800 dark:bg-zinc-950">

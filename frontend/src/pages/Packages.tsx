@@ -8,6 +8,8 @@ import {
   ChevronDown,
   FolderSearch,
   AlertOctagon,
+  Search,
+  X,
 } from 'lucide-react';
 import Modal from '../components/Modal';
 import { ContentCard } from '../components/ui/ContentCard';
@@ -22,6 +24,7 @@ export default function Packages() {
   const { data: settings } = useAppSettings();
   const { t } = useTranslation();
 
+  const [searchQuery, setSearchQuery] = useState('');
   const [platformFilter, setPlatformFilter] = useState<string>('All');
   const [sortBy, setSortBy] = useState<'downloads' | 'name' | 'platform'>('downloads');
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
@@ -57,8 +60,15 @@ export default function Packages() {
   );
 
   const filteredPackages = (packages as Package[]).filter((pkg) => {
-    if (platformFilter !== 'All' && pkg.platform !== platformFilter) return false;
-    return true;
+    const matchesPlatform = platformFilter === 'All' || pkg.platform === platformFilter;
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return matchesPlatform;
+
+    const titleMatch = (pkg.title || '').toLowerCase().includes(q);
+    const descMatch = (pkg.description || '').toLowerCase().includes(q);
+    const tagsMatch = (pkg.tags || '').toLowerCase().includes(q);
+
+    return matchesPlatform && (titleMatch || descMatch || tagsMatch);
   });
 
   const sortedPackages = [...filteredPackages].sort((a, b) => {
@@ -89,46 +99,61 @@ export default function Packages() {
           </div>
         </div>
 
-        {/* Filters & Sorting */}
-        <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
-          <div className="scrollbar-hide -mx-4 flex w-full gap-1.5 overflow-x-auto px-4 pb-2 whitespace-nowrap md:mx-0 md:w-auto md:px-0">
-            <button
-              onClick={() => setPlatformFilter('All')}
-              className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
-                platformFilter === 'All'
-                  ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
-                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
-              }`}
-            >
-              All
-            </button>
-            {platforms.map((platform) => (
+        {/* Filters, Search & Dropdowns */}
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 lg:flex-row lg:items-center">
+          <div className="relative w-full lg:w-72">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Paketlerde ara..."
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pr-8 pl-8 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-700"
+            />
+            {searchQuery && (
               <button
-                key={platform}
-                onClick={() => setPlatformFilter(platform)}
-                className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
-                  platformFilter === platform
-                    ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
-                    : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
-                }`}
+                onClick={() => setSearchQuery('')}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
               >
-                {platform}
+                <X size={14} />
               </button>
-            ))}
+            )}
           </div>
 
-          <div className="relative w-full shrink-0 md:w-auto">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
-            >
-              <option value="downloads">Aylık İndirmeye Göre</option>
-              <option value="name">Alfabetik (A-Z)</option>
-              <option value="platform">Platforma Göre</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
-              <ChevronDown size={14} aria-hidden="true" />
+          <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row">
+            {/* Platform Dropdown Filter */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={platformFilter}
+                onChange={(e) => setPlatformFilter(e.target.value)}
+                className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
+              >
+                <option value="All">Tüm Platformlar (All)</option>
+                {platforms.map((platform) => (
+                  <option key={platform} value={platform}>
+                    {platform}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                <ChevronDown size={14} aria-hidden="true" />
+              </div>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
+              >
+                <option value="downloads">Aylık İndirmeye Göre</option>
+                <option value="name">Alfabetik (A-Z)</option>
+                <option value="platform">Platforma Göre</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                <ChevronDown size={14} aria-hidden="true" />
+              </div>
             </div>
           </div>
         </div>
@@ -187,10 +212,13 @@ export default function Packages() {
                 Paket Bulunamadı
               </h3>
               <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-600 dark:text-zinc-400">
-                Seçtiğiniz filtreye uygun bir paket veya kütüphane bulunamadı.
+                Arama veya filtre kriterlerinize uygun paket bulunamadı.
               </p>
               <button
-                onClick={() => setPlatformFilter('All')}
+                onClick={() => {
+                  setPlatformFilter('All');
+                  setSearchQuery('');
+                }}
                 className="rounded-lg border border-zinc-200 bg-white px-4 py-2 font-mono text-xs text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
               >
                 Filtreleri Temizle

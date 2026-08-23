@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Skill } from '../types';
 import axios from 'axios';
-import { Wand2 } from 'lucide-react';
+import { Wand2, Search, X } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useTranslation } from 'react-i18next';
 import { useEnv } from '../hooks/useEnv';
@@ -12,6 +12,7 @@ export default function Skills() {
   const { t } = useTranslation();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -31,7 +32,13 @@ export default function Skills() {
     return <ListSkeleton />;
   }
 
-  const groupedSkills = skills.reduce(
+  const filteredSkills = skills.filter((skill) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return skill.name.toLowerCase().includes(q) || skill.category.toLowerCase().includes(q);
+  });
+
+  const groupedSkills = filteredSkills.reduce(
     (acc, skill) => {
       if (!acc[skill.category]) {
         acc[skill.category] = [];
@@ -46,19 +53,40 @@ export default function Skills() {
     <>
       <SEO title={`${t('skills.title')} | ResuMesh`} description={t('skills.subtitle')} />
       <div className="py-6">
-        <div className="mb-6">
-          <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
-            {t('skills.title')}
-          </h1>
-          <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
-            {t('skills.subtitle')}
-          </p>
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
+              {t('skills.title')}
+            </h1>
+            <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+              {t('skills.subtitle')}
+            </p>
+          </div>
+
+          <div className="relative w-full sm:w-64">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Yeteneklerde ara..."
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pr-8 pl-8 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-700"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
         </div>
 
-        {skills.length === 0 ? (
+        {Object.keys(groupedSkills).length === 0 ? (
           <div className="rounded-xl border border-zinc-200 bg-white py-12 text-center text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400">
             <Wand2 className="mx-auto mb-3 h-10 w-10 text-zinc-400 dark:text-zinc-500" />
-            <p className="font-mono text-xs">{t('skills.emptyDesc')}</p>
+            <p className="font-mono text-xs">Aradığınız kriterlere uygun yetenek bulunamadı.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

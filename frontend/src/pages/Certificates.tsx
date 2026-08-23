@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Certificate } from '../types';
 import axios from 'axios';
-import { Award, ExternalLink, Calendar } from 'lucide-react';
+import { Award, ExternalLink, Calendar, Search, X } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ export default function Certificates() {
 
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -39,6 +40,16 @@ export default function Certificates() {
     return <ListSkeleton />;
   }
 
+  const filteredCertificates = certificates.filter((cert) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+
+    const nameMatch = (cert.name || '').toLowerCase().includes(q);
+    const orgMatch = (cert.issuing_organization || '').toLowerCase().includes(q);
+
+    return nameMatch || orgMatch;
+  });
+
   return (
     <>
       <SEO
@@ -46,17 +57,38 @@ export default function Certificates() {
         description={t('certificates.subtitle')}
       />
       <div className="py-6">
-        <div className="mb-6">
-          <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
-            {t('certificates.title')}
-          </h1>
-          <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
-            {t('certificates.subtitle')}
-          </p>
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
+              {t('certificates.title')}
+            </h1>
+            <p className="mt-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+              {t('certificates.subtitle')}
+            </p>
+          </div>
+
+          <div className="relative w-full sm:w-64">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Sertifikalarda ara..."
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pr-8 pl-8 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-700"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {certificates.map((cert) => (
+          {filteredCertificates.map((cert) => (
             <div
               key={cert.id}
               className="flex flex-col rounded-xl border border-zinc-200 bg-white p-5 transition-colors hover:border-zinc-300 dark:border-zinc-800/80 dark:bg-zinc-900/50 dark:hover:border-zinc-700/80"
@@ -98,9 +130,11 @@ export default function Certificates() {
               </div>
             </div>
           ))}
-          {certificates.length === 0 && (
+          {filteredCertificates.length === 0 && (
             <div className="col-span-full py-12 text-center font-mono text-xs text-zinc-500 dark:text-zinc-400">
-              Henüz sertifika eklenmemiş.
+              {searchQuery
+                ? 'Aradığınız kriterlere uygun sertifika bulunamadı.'
+                : 'Henüz sertifika eklenmemiş.'}
             </div>
           )}
         </div>

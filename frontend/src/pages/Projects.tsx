@@ -9,6 +9,9 @@ import {
   ChevronDown,
   FolderGit,
   AlertOctagon,
+  Search,
+  X,
+  Filter,
 } from 'lucide-react';
 import Modal from '../components/Modal';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +29,7 @@ export default function Projects() {
   const { data: settings } = useAppSettings();
   const { t } = useTranslation();
 
+  const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('All');
   const [sortBy, setSortBy] = useState<
     'stars' | 'forks' | 'date_desc' | 'date_asc' | 'alphabetical'
@@ -67,12 +71,40 @@ export default function Projects() {
     );
   }
 
-  const allLanguages = Array.from(new Set(projects.flatMap((p) => p.languages || []))).filter(
+  // Extract unique languages
+  const rawLanguages = Array.from(new Set(projects.flatMap((p) => p.languages || []))).filter(
     Boolean
   );
 
-  const filteredProjects =
-    filter === 'All' ? projects : projects.filter((p) => p.languages?.includes(filter));
+  // Suggested language presets
+  const popularLanguages = [
+    'TypeScript',
+    'Python',
+    'Jupyter Notebook',
+    'JavaScript',
+    'HTML',
+    'Java',
+    'Go',
+    'C++',
+    'C#',
+    'C',
+  ];
+
+  const allLanguages = Array.from(
+    new Set([...rawLanguages, ...popularLanguages.filter((lang) => rawLanguages.includes(lang))])
+  ).sort((a, b) => a.localeCompare(b));
+
+  const filteredProjects = projects.filter((p) => {
+    const matchesCategory = filter === 'All' || p.languages?.includes(filter);
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return matchesCategory;
+
+    const nameMatch = (p.name || p.title || '').toLowerCase().includes(q);
+    const descMatch = (p.description || '').toLowerCase().includes(q);
+    const langMatch = (p.languages || []).some((l) => l.toLowerCase().includes(q));
+
+    return matchesCategory && (nameMatch || descMatch || langMatch);
+  });
 
   const sortedProjects = [...filteredProjects].sort((a, b) => {
     switch (sortBy) {
@@ -106,48 +138,64 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Filters & Sorting */}
-        <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
-          <div className="scrollbar-hide -mx-4 flex w-full gap-1.5 overflow-x-auto px-4 pb-2 whitespace-nowrap md:mx-0 md:w-auto md:px-0">
-            <button
-              onClick={() => setFilter('All')}
-              className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
-                filter === 'All'
-                  ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
-                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
-              }`}
-            >
-              All
-            </button>
-            {allLanguages.map((lang) => (
+        {/* Filters, Search & Dropdowns */}
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 lg:flex-row lg:items-center">
+          {/* Search Input */}
+          <div className="relative w-full lg:w-72">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Projelerde ara..."
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pr-8 pl-8 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-700"
+            />
+            {searchQuery && (
               <button
-                key={lang}
-                onClick={() => setFilter(lang)}
-                className={`shrink-0 rounded-lg border px-3.5 py-1.5 font-mono text-xs font-medium transition-colors focus:outline-none ${
-                  filter === lang
-                    ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
-                    : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200'
-                }`}
+                onClick={() => setSearchQuery('')}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
               >
-                {lang}
+                <X size={14} />
               </button>
-            ))}
+            )}
           </div>
 
-          <div className="relative w-full shrink-0 md:w-auto">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
-            >
-              <option value="stars">Yıldız Sayısına Göre</option>
-              <option value="forks">Fork Sayısına Göre</option>
-              <option value="date_desc">Eklenme Tarihi (En Yeni)</option>
-              <option value="date_asc">Eklenme Tarihi (En Eski)</option>
-              <option value="alphabetical">Alfabetik (A-Z)</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
-              <ChevronDown size={14} aria-hidden="true" />
+          <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row">
+            {/* Language Dropdown Filter */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
+              >
+                <option value="All">Tüm Diller (All)</option>
+                {allLanguages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                <ChevronDown size={14} aria-hidden="true" />
+              </div>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-2 pr-9 pl-3 font-mono text-xs text-zinc-700 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:focus:border-zinc-700"
+              >
+                <option value="stars">Yıldız Sayısına Göre</option>
+                <option value="forks">Fork Sayısına Göre</option>
+                <option value="date_desc">Eklenme Tarihi (En Yeni)</option>
+                <option value="date_asc">Eklenme Tarihi (En Eski)</option>
+                <option value="alphabetical">Alfabetik (A-Z)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                <ChevronDown size={14} aria-hidden="true" />
+              </div>
             </div>
           </div>
         </div>
@@ -193,11 +241,13 @@ export default function Projects() {
                 Proje Bulunamadı
               </h3>
               <p className="mx-auto mb-5 max-w-md font-mono text-xs text-zinc-600 dark:text-zinc-400">
-                Seçtiğiniz <span className="text-zinc-900 dark:text-zinc-200">"{filter}"</span>{' '}
-                filtresine uygun proje bulunamadı.
+                Arama veya filtre kriterlerinize uygun proje bulunamadı.
               </p>
               <button
-                onClick={() => setFilter('All')}
+                onClick={() => {
+                  setFilter('All');
+                  setSearchQuery('');
+                }}
                 className="rounded-lg border border-zinc-200 bg-white px-4 py-2 font-mono text-xs text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
               >
                 Filtreleri Temizle
