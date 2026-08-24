@@ -26,9 +26,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest ruff black isort
-          pip install git+https://github.com/AtaCanYmc/ResuMesh.git#subdirectory=resumesh-core || true
-          pip install git+https://github.com/AtaCanYmc/ResuMesh.git#subdirectory=resumesh-storage || true
-          pip install git+https://github.com/AtaCanYmc/resumesh-scrapers.git || true
           pip install -e .
 
       - name: Lint backend code

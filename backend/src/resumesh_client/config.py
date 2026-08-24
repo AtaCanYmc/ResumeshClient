@@ -23,10 +23,6 @@ class CoreSettings(BaseSettings):
     SUPABASE_URL: Optional[str] = None
     SUPABASE_KEY: Optional[str] = None
 
-    # Platform Scraper Keys (Optional)
-    GITHUB_PAT: Optional[str] = None
-    DEVTO_API_KEY: Optional[str] = None
-
     @field_validator("CORS_ORIGINS", mode="after")
     @classmethod
     def parse_cors_origins(cls, v: Any) -> List[str]:
