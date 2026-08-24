@@ -35,7 +35,7 @@ const HeroSection: React.FC = () => {
     const img = config?.hero?.avatarImage;
     if (img && img.startsWith('http')) return img;
     if (img && img.startsWith('/api/')) return `${env.API_URL}${img}`;
-    return `${env.API_URL}/api/v1/avatar/profile_pic.jpeg`;
+    return '/images/profile_pic.jpeg';
   }, [config?.hero?.avatarImage, env.API_URL]);
 
   return (
@@ -136,6 +136,8 @@ const HeroSection: React.FC = () => {
               <img
                 src={avatarSrc}
                 alt={config?.hero?.fullName || 'Profile Picture'}
+                fetchPriority="high"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
             </div>
