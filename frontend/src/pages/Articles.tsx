@@ -15,7 +15,7 @@ export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'MEDIUM' | 'DEV_TO'>('MEDIUM');
+  const [activeTab, setActiveTab] = useState<'ALL' | 'MEDIUM' | 'DEV_TO'>('ALL');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ export default function Articles() {
 
   const filteredArticles = articles.filter((a) => {
     const matchesTab =
+      activeTab === 'ALL' ||
       a.platform?.toUpperCase() === activeTab ||
       (activeTab === 'DEV_TO' && a.platform === 'Dev.to');
     const q = searchQuery.trim().toLowerCase();
@@ -86,6 +87,16 @@ export default function Articles() {
           </div>
 
           <div className="flex rounded-lg border border-zinc-200 bg-white p-1 font-mono text-xs dark:border-zinc-800 dark:bg-zinc-950">
+            <button
+              onClick={() => setActiveTab('ALL')}
+              className={`rounded-md px-4 py-1.5 font-medium transition-colors ${
+                activeTab === 'ALL'
+                  ? 'border border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200'
+              }`}
+            >
+              Tümü
+            </button>
             <button
               onClick={() => setActiveTab('MEDIUM')}
               className={`rounded-md px-4 py-1.5 font-medium transition-colors ${
