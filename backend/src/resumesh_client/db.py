@@ -8,6 +8,7 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from resumesh_client.config import settings
 
@@ -17,7 +18,7 @@ raw_db_url = (
     os.getenv("DATABASE_URL")
     or os.getenv("SUPABASE_DATABASE_URL")
     or settings.DATABASE_URL
-    or "sqlite:///:memory:"
+    or "sqlite:///./test.db"
 )
 
 # Normalize legacy postgres:// scheme to postgresql:// required by SQLAlchemy 2.0
@@ -27,7 +28,11 @@ if raw_db_url.startswith("postgres://"):
 DATABASE_URL = raw_db_url
 
 engine_kwargs = {}
-if DATABASE_URL.startswith("postgresql"):
+if DATABASE_URL.startswith("sqlite"):
+    engine_kwargs["connect_args"] = {"check_same_thread": False}
+    if DATABASE_URL.endswith(":memory:"):
+        engine_kwargs["poolclass"] = StaticPool
+elif DATABASE_URL.startswith("postgresql"):
     engine_kwargs.update(
         {
             "pool_pre_ping": True,

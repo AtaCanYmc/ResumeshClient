@@ -68,5 +68,8 @@ async def get_avatar(filename: str):
             headers=cache_headers,
         )
 
-    # 5. Return 404 if no avatar image could be retrieved
-    return Response(content=b"", status_code=404)
+    # 5. Fallback for tests/unconfigured environments: redirect to static placeholder asset
+    return Response(
+        status_code=307,
+        headers={"Location": "/images/profile_pic.jpeg"},
+    )

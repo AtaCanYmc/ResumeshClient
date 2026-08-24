@@ -1,6 +1,7 @@
 import uuid
 
 from sqlalchemy import JSON, Column, DateTime, Integer, String, Text, func
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from resumesh_client.db import Base
 
@@ -18,8 +19,8 @@ class Project(Base):
     stars = Column(Integer, default=0)
     watchers = Column(Integer, default=0)
     forks = Column(Integer, default=0)
-    languages = Column(JSON, default=[])
-    tags = Column(JSON, default=[])
+    languages = Column(ARRAY(String).with_variant(JSON, "sqlite"), default=list)
+    tags = Column(ARRAY(String).with_variant(JSON, "sqlite"), default=list)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True), onupdate=func.now(), server_default=func.now()

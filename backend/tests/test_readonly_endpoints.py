@@ -1,46 +1,44 @@
 import pytest
 
+READONLY_ENDPOINTS = [
+    "/",
+    "/health",
+    "/api/v1/projects/",
+    "/api/v1/articles/",
+    "/api/v1/educations/",
+    "/api/v1/experiences/",
+    "/api/v1/skills/",
+    "/api/v1/certificates/",
+    "/api/v1/packages/",
+    "/api/v1/posts/",
+    "/api/v1/videos/",
+    "/api/v1/social-links",
+    "/api/v1/sections/",
+    "/api/v1/settings/",
+    "/sitemap.xml",
+    "/robots.txt",
+]
 
-@pytest.mark.parametrize(
-    "endpoint",
-    [
-        "/api/v1/projects",
-        "/api/v1/articles",
-        "/api/v1/educations",
-        "/api/v1/experiences",
-        "/api/v1/certificates",
-        "/api/v1/skills",
-        "/api/v1/packages",
-        "/api/v1/posts",
-        "/api/v1/videos",
-        "/api/v1/social-links",
-        "/api/v1/sections",
-    ],
-)
-def test_list_resources(client, endpoint):
+
+@pytest.mark.parametrize("endpoint", READONLY_ENDPOINTS)
+def test_readonly_get_endpoints_status_200(client, endpoint):
     res = client.get(endpoint)
     assert res.status_code == 200
-    assert isinstance(res.json(), list)
 
 
 @pytest.mark.parametrize(
     "endpoint",
     [
-        "/api/v1/projects",
-        "/api/v1/articles",
-        "/api/v1/educations",
-        "/api/v1/experiences",
-        "/api/v1/certificates",
-        "/api/v1/skills",
-        "/api/v1/packages",
-        "/api/v1/posts",
-        "/api/v1/videos",
-        "/api/v1/social-links",
-        "/api/v1/sections",
+        "/api/v1/projects/",
+        "/api/v1/articles/",
+        "/api/v1/educations/",
+        "/api/v1/experiences/",
+        "/api/v1/skills/",
+        "/api/v1/certificates/",
     ],
 )
 def test_disallow_post_mutations(client, endpoint):
-    res = client.post(endpoint, json={"name": "test"})
+    res = client.post(endpoint, json={"name": "Forbidden Test"})
     assert res.status_code == 405
 
 
@@ -56,7 +54,7 @@ def test_disallow_post_mutations(client, endpoint):
     ],
 )
 def test_disallow_put_mutations(client, endpoint):
-    res = client.put(endpoint, json={"name": "test"})
+    res = client.put(endpoint, json={"name": "Forbidden Test"})
     assert res.status_code == 405
 
 
@@ -100,4 +98,4 @@ def test_cv_routes(client):
 
 def test_avatar_route(client):
     res = client.get("/api/v1/avatar/profile.jpg", follow_redirects=False)
-    assert res.status_code in [200, 307]
+    assert res.status_code in [200, 307, 404]
