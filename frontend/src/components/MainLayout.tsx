@@ -226,7 +226,7 @@ const MainLayout: React.FC = () => {
       <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
         {/* Topbar */}
         <header className="no-print sticky top-0 z-30 flex h-16 items-center justify-between border-b border-zinc-200/80 bg-white/80 px-4 backdrop-blur-sm sm:px-8 dark:border-zinc-800/80 dark:bg-zinc-950/80">
-          <div className="flex min-w-0 flex-1 items-center">
+          <div className="flex min-w-0 items-center">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="mr-2 rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none md:hidden dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
@@ -234,11 +234,9 @@ const MainLayout: React.FC = () => {
             >
               <Menu size={20} aria-hidden="true" />
             </button>
-            <div className="max-w-2xl flex-1">
-              <SearchBar />
-            </div>
           </div>
-          <div className="ml-4 flex flex-shrink-0 items-center space-x-2">
+          <div className="flex flex-shrink-0 items-center space-x-1.5">
+            <SearchBar />
             <LanguageSwitcher />
             <button
               onClick={toggleTheme}

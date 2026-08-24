@@ -1,6 +1,5 @@
 import React from 'react';
-import { Download, ArrowRight, Loader2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Download, Search, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useContentConfig } from '../../hooks/useHomeData';
@@ -8,6 +7,7 @@ import { HeroSkeleton } from '../ui/Skeletons';
 import { getIcon } from '../../utils/iconResolver';
 import { useDownloadResume } from '../../hooks/useDownloadResume';
 import { useEnv } from '../../hooks/useEnv';
+import { useAvatarCache } from '../../hooks/useAvatarCache';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,12 +31,18 @@ const HeroSection: React.FC = () => {
   const { data: config, isLoading } = useContentConfig(i18n.language);
   const { isDownloading, handleDownload } = useDownloadResume(config?.hero?.resumeLink);
 
-  const avatarSrc = React.useMemo(() => {
+  const rawAvatarUrl = React.useMemo(() => {
     const img = config?.hero?.avatarImage;
     if (img && img.startsWith('http')) return img;
     if (img && img.startsWith('/api/')) return `${env.API_URL}${img}`;
-    return '/images/profile_pic.jpeg';
+    return `${env.API_URL}/api/v1/avatar/profile_pic.jpeg`;
   }, [config?.hero?.avatarImage, env.API_URL]);
+
+  const avatarSrc = useAvatarCache(rawAvatarUrl);
+
+  const openSearchModal = () => {
+    window.dispatchEvent(new CustomEvent('open-search-modal'));
+  };
 
   return (
     <div className="relative my-8 flex min-h-[50vh] items-center">
@@ -94,14 +100,17 @@ const HeroSection: React.FC = () => {
                 </span>
               </button>
 
-              <Link
-                to="/projects"
-                className="flex items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-6 py-2.5 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
-                aria-label={t('hero.viewProjects')}
+              <button
+                onClick={openSearchModal}
+                className="flex items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
+                aria-label="Portfolyoda Ara"
               >
-                <span>{t('hero.viewProjects')}</span>
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
+                <Search size={16} aria-hidden="true" />
+                <span>Portfolyoda Ara</span>
+                <span className="ml-1 rounded border border-zinc-200 bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+                  ⌘K
+                </span>
+              </button>
 
               <div className="mt-3 flex items-center gap-1.5 sm:mt-0 sm:ml-2">
                 {config.socials.map((social: any) => {

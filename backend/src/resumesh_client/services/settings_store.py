@@ -9,7 +9,6 @@ from typing import Any, Dict, List
 
 from sqlalchemy.orm import Session
 
-from resumesh_client.config import settings
 from resumesh_client.models.app_settings import AppSetting
 from resumesh_client.models.section import Section
 from resumesh_client.models.social_link import SocialLink
@@ -18,9 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 def get_default_avatar_url() -> str:
-    if settings.SUPABASE_URL:
-        base_url = settings.SUPABASE_URL.rstrip("/")
-        return f"{base_url}/storage/v1/object/public/avatars/profile_pic.jpeg"
     return "/api/v1/avatar/profile_pic.jpeg"
 
 
@@ -197,16 +193,17 @@ def get_all_settings(db: Session) -> Dict[str, Any]:
 
     result = {**get_kv_defaults(), **stored}
 
-    # Ensure avatarImage is set to active avatar URL
+    # Ensure avatarImage is set to active API avatar endpoint
     for lang in ["en", "tr"]:
         if lang in result and isinstance(result[lang], dict):
             hero = result[lang].get("hero")
             if isinstance(hero, dict):
                 current_img = hero.get("avatarImage")
-                if not current_img or current_img in [
-                    "/images/profile_pic.jpeg",
-                    "profile_pic.jpeg",
-                ]:
+                if (
+                    not current_img
+                    or current_img in ["/images/profile_pic.jpeg", "profile_pic.jpeg"]
+                    or "supabase.co" in current_img
+                ):
                     hero["avatarImage"] = get_default_avatar_url()
 
     # Fetch sections from sections table

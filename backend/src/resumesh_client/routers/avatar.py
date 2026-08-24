@@ -1,15 +1,18 @@
+import logging
 import mimetypes
 from typing import Dict
 
+import httpx
 from fastapi import APIRouter, Response
-from fastapi.responses import RedirectResponse
 
 from resumesh_client.config import settings
 from resumesh_client.providers.supabase.client import SupabaseClientManager
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/api/v1/avatar", tags=["Avatar Storage"])
 
-# In-memory byte cache for fast instant serving (<1ms)
+# In-memory byte cache for backend caching
 _AVATAR_BYTE_CACHE: Dict[str, bytes] = {}
 
 
@@ -21,7 +24,7 @@ async def get_avatar(filename: str):
         "Cache-Control": "public, max-age=604800, stale-while-revalidate=86400, immutable"
     }
 
-    # Serve from in-memory cache if available
+    # 1. Serve from in-memory cache if already pulled
     if clean_filename in _AVATAR_BYTE_CACHE:
         content_type, _ = mimetypes.guess_type(clean_filename)
         return Response(
@@ -30,24 +33,40 @@ async def get_avatar(filename: str):
             headers=cache_headers,
         )
 
+    file_bytes = None
+
+    # 2. Try downloading via Supabase SDK Client
     try:
         client = SupabaseClientManager.get_client()
         file_bytes = await client.storage.from_("avatars").download(clean_filename)
-        if file_bytes:
-            _AVATAR_BYTE_CACHE[clean_filename] = file_bytes
+    except Exception as exc:
+        logger.warning(
+            f"Supabase SDK download failed for avatar {clean_filename}: {exc}"
+        )
+
+    # 3. Fallback: Download via httpx if SDK fails, but SUPABASE_URL is configured
+    if not file_bytes and settings.SUPABASE_URL:
+        try:
+            base_url = settings.SUPABASE_URL.rstrip("/")
+            public_url = f"{base_url}/storage/v1/object/public/avatars/{clean_filename}"
+            async with httpx.AsyncClient(timeout=10.0) as http_client:
+                res = await http_client.get(public_url)
+                if res.status_code == 200:
+                    file_bytes = res.content
+        except Exception as exc:
+            logger.warning(
+                f"HTTP fallback fetch failed for avatar {clean_filename}: {exc}"
+            )
+
+    # 4. Cache bytes in memory if fetched successfully
+    if file_bytes:
+        _AVATAR_BYTE_CACHE[clean_filename] = file_bytes
         content_type, _ = mimetypes.guess_type(clean_filename)
         return Response(
             content=file_bytes,
             media_type=content_type or "image/jpeg",
             headers=cache_headers,
         )
-    except Exception:
-        if settings.SUPABASE_URL:
-            base_url = settings.SUPABASE_URL.rstrip("/")
-            public_url = f"{base_url}/storage/v1/object/public/avatars/{clean_filename}"
-            return RedirectResponse(
-                url=public_url, status_code=307, headers=cache_headers
-            )
-        return RedirectResponse(
-            url="/images/profile_pic.jpeg", status_code=307, headers=cache_headers
-        )
+
+    # 5. Return 404 if no avatar image could be retrieved
+    return Response(content=b"", status_code=404)
